@@ -1,0 +1,10 @@
+#partieGauche{
+    width: 300px;
+    float:left;
+    border : 1px;
+    border-style: none solid none none;
+}
+
+#info{
+    margin-top: 36px;
+}

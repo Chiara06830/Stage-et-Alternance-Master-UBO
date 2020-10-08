@@ -3,3 +3,11 @@
     margin-right: 7px;
     float:left; 
 }
+
+.centre{
+    text-align: center;
+}
+
+body{
+    background: snow;
+}

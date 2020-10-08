@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import "./style/general.css";
 import Connexion from './View/connexion.js';
 import TableauEtudiant from"./View/pageEtudiant.js";
 
@@ -9,7 +10,7 @@ class Page extends React.Component {
         this.state = {
             pages : [<Connexion onClick={() => this.changerPage(1)}/>, 
             <TableauEtudiant />],
-            pageActuel : 1
+            pageActuel : 0
         };
     }
 

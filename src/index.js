@@ -1,17 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import "./style/general.css";
-import Connexion from './View/connexion.js';
-import TableauEtudiant from"./View/pageEtudiant.js";
+import Connexion from './connexion.js';
+import Etudiant from"./etudiant/pageEtudiant.js";
 
 class Page extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            pages : [<Connexion onClick={() => this.changerPage(1)}/>, 
-            <TableauEtudiant />],
-            pageActuel : 0
+            pages : [<Connexion onClick={() => this.chargerCompte()}/>, 
+            <Etudiant />],
+            pageActuel : 1
         };
+    }
+
+    chargerCompte(){
+        this.changerPage(1);
     }
 
     changerPage(i){

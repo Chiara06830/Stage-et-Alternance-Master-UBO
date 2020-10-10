@@ -49,14 +49,33 @@ class InfoPerso extends React.Component {
     }
 }
 
-class TableauEtudiant extends React.Component {
+
+class GestionEntreprise extends React.Component{
     render(){
-        return(
-            <div id="partieGauche">
-                <InfoPerso />
+        return (
+            <div>
+                <h2>Ajouter une entreprise</h2>
+                <p>
+                    Si l'entreprise pour laquelle vous candidatez n'existe pas dans le système, vous devez la rajouter.
+                    Son existence peut être vérifier par un enseignant. 
+                    S'il l'approuve pas il a le droit de la supprimer du système. 
+                    Dans ce cas toutes vos candiatures, vos entretiens et vos stage en lien avec cette entreprise seront supprimé.
+                </p>
+                <button type="button">Ajouter une entreprise</button>
             </div>
         );
     }
 }
 
-export default TableauEtudiant;
+class Info extends React.Component{
+    render(){
+        return (
+            <div id="partieGauche">
+                <InfoPerso />
+                <GestionEntreprise />
+            </div>
+        );
+    }
+}
+
+export default Info;

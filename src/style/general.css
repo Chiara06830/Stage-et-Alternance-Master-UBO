@@ -1,3 +1,11 @@
+body{
+    height: 100%;
+}
+
+div {
+    height: 100%;
+}
+
 .align{
     margin-left: 7px;
     margin-right: 7px;
@@ -9,5 +17,21 @@
 }
 
 body{
-    background: snow;
+    background: lavender;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid gray;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
 }

@@ -1,5 +1,6 @@
 #partieGauche{
     width: 255px;
+    height: 100%;
     float:left;
     background-color: white;
     padding: 5px;
@@ -10,6 +11,7 @@
 .tableauBord{
     margin-left: 10px;
     margin-top: 10px;
+    width : calc(100% - 290px);
     float:left;
     background-color: white;
     padding: 5px;
@@ -19,8 +21,4 @@
 
 #info{
     margin-top: 36px;
-}
-
-table, th, td {
-    border: 1px solid black;
 }

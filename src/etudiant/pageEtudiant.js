@@ -1,6 +1,6 @@
 import React from 'react';
-import Info from "./infos";
-import TableauBord from "./tableauDeBord";
+import Info from "./infosEtudiant";
+import TableauBord from "./bordeEtudiant";
 import "../style/general.css";
 import "../style/etudiant.css";
 

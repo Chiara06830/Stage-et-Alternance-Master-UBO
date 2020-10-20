@@ -6,6 +6,7 @@ class InfoPerso extends React.Component {
     constructor(props){
         super(props);
         this.state = {
+            etudiants: [],
             numEtudiant : "e22006666",
             nom : "DURDEN",
             prenom : "Tyler",
@@ -14,11 +15,12 @@ class InfoPerso extends React.Component {
             nationalite : "EN",
             alternance : "oui",
         }
-        this.chargerInfoPerso();
     }
 
-    chargerInfoPerso = () =>{
-        this.setState({numEtudiant : "e00000000"});
+    componentDidMount(){
+        /*fetch('/api/etudiants')
+            .then(res => res.json())
+            .then(etudiants => this.setState({etudiants}, () => console.log('Etudiant fetched', etudiants)));*/
     }
 
     render(){

@@ -9,7 +9,6 @@ class Popup extends React.Component {
                     <h3>{this.props.text}</h3>
                     <div>{this.props.contenu}</div>
                     <span className="close-icon" onClick={this.props.closePopup}>x</span>
-                    {this.props.btnClose}
                 </div>
             </div>
         );
@@ -34,7 +33,7 @@ class UsePopup extends Component {
                 <button onClick={this.togglePopup.bind(this)}> +</button>
         
                 {this.state.showPopup ?
-                    <Popup text={this.props.text} contenu = {this.props.contenu} closePopup={this.togglePopup.bind(this)} btnClose={this.props.btnClose} />
+                    <Popup text={this.props.text} contenu = {this.props.contenu} closePopup={this.togglePopup.bind(this)} />
                     : null
                 }
             </div>

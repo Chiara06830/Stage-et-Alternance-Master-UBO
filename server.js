@@ -2,11 +2,34 @@ const express = require('express');
 const app = express();
 const port = 5000;
 
+const mysql = require('mysql');  
+
+    /*let connection = mysql.createConnection({
+        host     : 'obiwan2.univ-brest.fr',
+        user     : 'zrelevach',
+        password : 'tq494ej8',
+        database : 'zil3-zrelevach'
+    });
+
+    connection.connect();*/
+
 app.get('/api/etudiants', (req, res) => {
+    
+    /*
+    let query = 'SELECT ETUDIANT.adresse_mail, UTILISATEUR.nom_utilisateur as nom_etudiant, UTILISATEUR.prenom_utilisateur as prenom_etudiant, ETUDIANT.filiere\
+            FROM ETUDIANT, UTILISATEUR\
+            WHERE UTILISATEUR.id_utilisateur = ETUDIANT.UTILISATEUR_id_utilisateur \
+            AND ETUDIANT.id_etudiant = 1';
+
+    connection.query(query, function (error, results, fields) {
+        if (error) throw error;
+        console.log('le resultat de la requête est : ', results[0].valeur);
+    });
+
+    connection.end();*/
+
     const etudiants = [
-        {id : 1, nom : 'Jean', prenom : 'Dupont'},
-        {id : 2, nom : 'Jhon', prenom : 'Travolta'},
-        {id : 3, nom : 'Brad', prenom : 'Pitt'}
+        {adresse_mail : 'jean.dupont@etudiant.univ-brest.fr', nom_etudiant : "Dupont", prenom_etudiant: "Jean", filiere: "ILIADE"}
     ];
 
     res.json(etudiants);

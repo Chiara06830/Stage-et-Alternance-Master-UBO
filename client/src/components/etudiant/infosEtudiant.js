@@ -1,6 +1,6 @@
 import React from 'react';
-import "../style/general.css";
-import "../style/etudiant.css";
+import "../../general.css";
+import "./etudiant.css";
 
 class InfoPerso extends React.Component {
     constructor(props){

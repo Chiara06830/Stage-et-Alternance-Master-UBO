@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import "./style/general.css";
-import Etudiant from"./etudiant/pageEtudiant.js";
-import Enseignant from './enseignant/pageEnseignant';
+import "./general.css";
+import Etudiant from"./components/etudiant/pageEtudiant";
+import Enseignant from './components/enseignant/pageEnseignant';
 
 class Connexion extends React.Component {
     constructor(props){

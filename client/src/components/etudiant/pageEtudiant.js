@@ -1,8 +1,8 @@
 import React from 'react';
 import Info from "./infosEtudiant";
 import TableauBord from "./boardEtudiant";
-import "../style/general.css";
-import "../style/etudiant.css";
+import "../../general.css";
+import "./etudiant.css";
 
 class Etudiant extends React.Component {
     render(){

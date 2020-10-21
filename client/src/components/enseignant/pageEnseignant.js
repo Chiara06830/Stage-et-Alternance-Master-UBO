@@ -1,6 +1,5 @@
 import React from 'react';
-import "../style/general.css";
-import "../style/etudiant.css";
+import "../../general.css";
 
 class Enseignant extends React.Component {
     render(){

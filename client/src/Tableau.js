@@ -1,6 +1,6 @@
 import React from 'react';
-import "../style/general.css";
-import "../style/etudiant.css";
+import "./general.css";
+import "./components/etudiant/etudiant.css";
 
 class Tableau extends React.Component{
     constructor(props){

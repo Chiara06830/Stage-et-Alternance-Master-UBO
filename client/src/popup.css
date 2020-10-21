@@ -5,6 +5,7 @@
     height: 100vh;
     top: 0;
     left: 0;
+    text-align: center;
 }
 .popup_inner {
     position: relative;

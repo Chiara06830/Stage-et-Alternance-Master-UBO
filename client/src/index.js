@@ -41,9 +41,9 @@ class Connexion extends React.Component {
     }
 
     render() {
-        if(this.state.charger == 0){
+        if(this.state.charger === 0){
             return (
-                <div>
+                <div className="connexion">
                     <h1>Connexion</h1>
                     <form onSubmit={this.handleSubmit}>
                         <input type="text" placeholder="Adresse mail" value={this.state.mail} onChange={this.sauvMail}/><br/>
@@ -55,11 +55,11 @@ class Connexion extends React.Component {
                     <a href="">S'inscrire</a>
                 </div>
             );
-        }else if(this.state.charger == 1){
+        }else if(this.state.charger === 1){
             return(
                 <Etudiant />
             );
-        }else if(this.state.charger == 2){
+        }else if(this.state.charger === 2){
             return(
                 <Enseignant />
             );

@@ -14,7 +14,7 @@ class Documents extends React.Component{
 
     render(){
         return (
-            <div class="tableauBord">
+            <div className="tableauBord">
                 <h2>Mes documents</h2>
                 <h3>CV</h3>
                 <PopAjoutCV/>
@@ -30,7 +30,7 @@ class Documents extends React.Component{
 class RechercheStage extends React.Component {
     render(){
         return(
-            <div class="tableauBord">
+            <div className="tableauBord">
                 <h2>Mes recherches de stages</h2>
                 <h3>Candidatures</h3>
                 <PopAjoutCandidature />

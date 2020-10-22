@@ -11,24 +11,46 @@ class InfoPerso extends React.Component {
             nom : "DURDEN",
             prenom : "Tyler",
             filiere : "ILIADE",
-            dateNaissance : "12/06/1979",
+            dateNaissance : "13/06/1979",
             nationalite : "EN",
             alternance : "oui",
         }
     }
 
     componentDidMount(){
-        /*fetch('/api/etudiants')
-            .then(res => res.json())
-            .then(etudiants => this.setState({etudiants}, () => console.log('Etudiant fetched', etudiants)));*/
+        this.fetchUsers();
+    }
+
+    fetchUsers() {
+        fetch(`http://localhost:5000/api/etudiants`)
+            .then(response => response.json())
+            .then(data =>{
+               this.setState({
+                    etudiants: data 
+                });
+                console.log(data);
+                this.attribution();
+            })
+            .catch(error => this.setState({ error}));
+    }
+
+    attribution(){
+        console.log("Informations étudiant attribuées");
+        this.setState({numEtudiant : this.state.etudiants['adresse_mail']});
+        this.setState({nom : this.state.etudiants['nom_etudiant']});
+        this.setState({prenom : this.state.etudiants['prenom_etudiant']});
+        this.setState({filiere : this.state.etudiants['filiere']});
+        this.setState({dateNaissance : this.state.etudiants['date_naissance']});
+        this.setState({nationalite : this.state.etudiants['nationalite']});
+        this.setState({alternance : this.state.etudiants['alternance']});
     }
 
     render(){
         return(
             <div>
                 <h2>Informations personelles</h2>
-                <div class="align">
-                    <p>Numéro étudiant : <br/>
+                <div className="align">
+                    <p>Mail : <br/>
                         Nom : <br/>
                         Prénom : <br/>
                         Filière : <br/>

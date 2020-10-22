@@ -25,7 +25,7 @@ class Tableau extends React.Component{
             col += "<th>" + nom + "</th>";
         }
 
-        return <tr class="titre" dangerouslySetInnerHTML={{ __html: col }}/>;
+        return <tr className="titre" dangerouslySetInnerHTML={{ __html: col }}/>;
     }
 
     render(){

@@ -1,5 +1,5 @@
 import React from 'react';
-import Tableau from "../../Tableau";
+import Tableau from "../../utilitaires/Tableau";
 import "../../general.css";
 import "./etudiant.css";
 import PopAjoutEntretien from './PopUps/popAjoutEntretien';
@@ -10,8 +10,6 @@ import PopAjoutStage from './PopUps/popAjoutStage';
 
 
 class Documents extends React.Component{
-    //------------- Rendu -------------//
-
     render(){
         return (
             <div className="tableauBord">

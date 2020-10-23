@@ -1,5 +1,5 @@
 import React from 'react';
-import UsePopup from '../../../PopUp';
+import UsePopup from '../../../utilitaires/PopUp';
 
 class PopAjoutEntretien extends React.Component {
     constructor(props){
@@ -31,8 +31,6 @@ class PopAjoutEntretien extends React.Component {
     //------------- Fonction utilitaires -------------//
 
     ajoutIntervenant(){
-        console.log("pouet");
-        console.log(document.getElementById("intervenant"));
         const inter = 
         <form>
             <input type="text" placeholder="Nom de l'intervenant" value={this.state.nomIntervenant} onChange={this.sauvNomIntervenant}/>

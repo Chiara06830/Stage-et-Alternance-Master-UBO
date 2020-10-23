@@ -1,6 +1,6 @@
 import React from 'react';
 import './style.css'
-import UsePopup from '../../../PopUp';
+import UsePopup from '../../../utilitaires/PopUp';
 
 class PopAjoutCV extends React.Component {
     constructor(props){
@@ -19,13 +19,13 @@ class PopAjoutCV extends React.Component {
     //------------- Envoie des données -------------//
 
     handleCv(){
-        console.log("Recuperation CV");
+        
     }
 
     //------------- Fonction utilitaires -------------//
 
     searchFile(){
-
+        console.log("Recupération du CV");
     }
 
     //------------- Rendu -------------//
@@ -35,8 +35,8 @@ class PopAjoutCV extends React.Component {
             <div>
                 <form onSubmit={this.handleCv}>
                     <input type="text" placeholder="C://" value={this.state.cv} onChange={this.sauvCV}/>
-                    <button class="parcour" type="button" onClick={this.searchFile()}>Parcourir</button><br/>
-                    <p class="soustexte">Seul le format pdf est accepté</p>
+                    <button className="parcour" type="button" onClick={() => this.searchFile()}>Parcourir</button><br/>
+                    <p className="soustexte">Seul le format pdf est accepté</p>
                     <button type="submit">valider</button>
                 </form>
                 

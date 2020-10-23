@@ -11,9 +11,9 @@ class InfoPerso extends React.Component {
             nom : "DURDEN",
             prenom : "Tyler",
             filiere : "ILIADE",
-            dateNaissance : "13/06/1979",
+            dateNaissance : "18-12-1963",
             nationalite : "EN",
-            alternance : "oui",
+            alternance : "oui"
         }
     }
 
@@ -22,13 +22,13 @@ class InfoPerso extends React.Component {
     }
 
     fetchUsers() {
-        fetch(`http://localhost:5000/api/etudiants`)
+        fetch(`http://localhost:7146/api/etudiants`)
             .then(response => response.json())
             .then(data =>{
-               this.setState({
+                this.setState({
                     etudiants: data 
                 });
-                console.log(data);
+                console.log("Etudiant : ", data);
                 this.attribution();
             })
             .catch(error => this.setState({ error}));
@@ -67,7 +67,7 @@ class InfoPerso extends React.Component {
                         {this.state.nationalite}<br />
                         {this.state.alternance}</p>
                 </div><br />
-                <button type="button">Modifier</button>
+                <button type="button" onClick={() => console.log("modifier")}>Modifier</button>
             </div>
         );
     }

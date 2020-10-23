@@ -1,5 +1,5 @@
 import React from 'react';
-import UsePopup from '../../../PopUp';
+import UsePopup from '../../../utilitaires/PopUp';
 
 class PopAjoutCandidature extends React.Component {
     constructor(props){

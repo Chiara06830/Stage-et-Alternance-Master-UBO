@@ -26,7 +26,7 @@ class PopAjoutCandidature extends React.Component {
                 <form onSubmit={this.handleCandidature}>
                     <p>Entreprise</p>
                     <input type="text" value={this.state.entrepriseCandidature} onChange={this.sauvEntrepriseCandidature}/>
-                    <a href="">Si l'entreprise n'existe pas, ajouter l'entreprise</a>
+                    <a href="google.com">Si l'entreprise n'existe pas, ajouter l'entreprise</a>
                     <p>origine de l'offre</p>
                     <form>
                         <select>

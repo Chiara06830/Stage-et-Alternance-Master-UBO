@@ -14,9 +14,10 @@ let connection = mysql.createConnection({
 
 
 app.use(cors());
-app.get('/api/etudiants', (req, res) => {
-    console.log("passage");
 
+//-----------Infos page etudiant-----------
+
+app.get('/api/etudiants', (req, res) => {
     const etudiants =
         {"adresse_mail" : 'jean.dupont@etudiant.univ-brest.fr', 
         "nom_etudiant" : "Dupont", 
@@ -43,6 +44,44 @@ app.get('/api/etudiants', (req, res) => {
 
     res = res.json(etudiants);
 });
+
+//-----------Tableaux page etudiant-----------
+
+app.get('/api/tableau/cv', (req, res) => {
+    const contenu ={};
+
+    res = res.json(contenu);
+});
+
+app.get('/api/tableau/lettre', (req, res) => {
+    const contenu ={};
+
+    res = res.json(contenu);
+});
+
+app.get('/api/tableau/candidature', (req, res) => {
+    const contenu ={};
+
+    res = res.json(contenu);
+});
+
+app.get('/api/tableau/entretien', (req, res) => {
+    const contenu ={};
+
+    res = res.json(contenu);
+});
+
+app.get('/api/tableau/stage', (req, res) => {
+    const contenu ={
+        0:{"Entreprise":"prout", "Type de contrat":"pouet", "Posibilité d'alternance": "woop"},
+        1:{"Entreprise":"prout", "Type de contrat":"pouet", "Posibilité d'alternance": "woop"}
+    };
+
+    res = res.json(contenu);
+});
+
+
+//-----------lancement du serveur-----------
 
 app.listen(port, () =>{
     console.log(`Server demarrer sur le port ${port}`);

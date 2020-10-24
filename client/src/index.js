@@ -50,9 +50,9 @@ class Connexion extends React.Component {
                         <input type="text" placeholder="Mot de passe" value={this.state.mdp} onChange={this.sauvMdp}/><br/>
                         <button type="submit">Se connecter</button><br/>
                     </form>
-                    <a href="">Mot de passe oublié</a><br/>
+                    <a href="google.com">Mot de passe oublié</a><br/>
                     <p>Vous n'êtes pas encore inscrit ?</p>
-                    <a href="">S'inscrire</a>
+                    <a href="google.com">S'inscrire</a>
                 </div>
             );
         }else if(this.state.charger === 1){

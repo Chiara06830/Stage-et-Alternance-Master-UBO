@@ -17,7 +17,7 @@ class PopAjoutStage extends React.Component{
             <form>
                 <p>Entreprise</p>
                 <input type="text" value={this.state.entreprise} onChange={this.sauvEntreprise}/>
-                <a href="">Si l'entreprise n'existe pas, ajouter l'entreprise</a>
+                <a href="google.com">Si l'entreprise n'existe pas, ajouter l'entreprise</a>
                 <p>Type de contrat</p>
                 <form>
                     <select>

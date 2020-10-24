@@ -1,5 +1,6 @@
 const cors = require('cors');
 const express = require('express');
+const fileUpload = require('express-fileupload');
 const app = express();
 const port = 7146;
 
@@ -14,6 +15,7 @@ let connection = mysql.createConnection({
 
 
 app.use(cors());
+app.use(fileUpload());
 
 //-----------Infos page etudiant-----------
 
@@ -43,6 +45,41 @@ app.get('/api/etudiants', (req, res) => {
     });*/
 
     res = res.json(etudiants);
+});
+
+//-----------------------
+app.post('/upload/cv', (res, req) =>{
+    if(req.files === null){ //si on essaie de récuperer rien du tout
+        return res.statusCode(400).json({msg : 'Auncun fihcier chargé'});
+    }
+
+    const file = req.files.cv;
+
+    file.mv(`${__dirname}/client/public/uploads/cv/${file.name}`, err =>{
+        if(err){
+            console.error(err);
+            return res.statusCode(500).send(err);
+        }
+
+        res.json({fileName: file.name, filePath: `/uploads/cv/${file.name}`})
+    });
+});
+
+app.post('/upload/lettre', (res, req) =>{
+    if(req.files === null){ //si on essaie de récuperer rien du tout
+        return res.statusCode(400).json({msg : 'Auncun fihcier chargé'});
+    }
+
+    const file = req.files.cv;
+
+    file.mv(`${__dirname}/client/public/uploads/cv/${file.name}`, err =>{
+        if(err){
+            console.error(err);
+            return res.statusCode(500).send(err);
+        }
+
+        res.json({fileName: file.name, filePath: `/uploads/cv/${file.name}`})
+    });
 });
 
 //-----------Tableaux page etudiant-----------

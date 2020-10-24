@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import Tableau from "../../utilitaires/Tableau";
 import "../../general.css";
 import "./etudiant.css";
@@ -9,18 +9,18 @@ import PopAjoutCandidature from'./PopUps/popAjoutCandidature';
 import PopAjoutStage from './PopUps/popAjoutStage';
 
 
-class Documents extends React.Component{
+class Documents extends Component{
     render(){
         return (
             <div className="tableauBord">
                 <h2>Mes documents</h2>
-                <h3>CV</h3>
+                <h3 className="align">CV</h3>
                 <PopAjoutCV/>
                 <Tableau 
                     chemin = 'http://localhost:7146/api/tableau/cv'
                     nbColonne = {7} 
                     nomColonne = {["Date de dépôt", "CV", "Date consultation", "Enseignant consultant", "Commentaire", "   ", "   "]} />
-                <h3>Lettres de motivation</h3>
+                <h3 className="align">Lettres de motivation</h3>
                 <PopAjoutLettre/>
                 <Tableau 
                     chemin = 'http://localhost:7146/api/tableau/lettre'
@@ -31,24 +31,24 @@ class Documents extends React.Component{
     }
 }
 
-class RechercheStage extends React.Component {
+class RechercheStage extends Component {
     render(){
         return(
             <div className="tableauBord">
                 <h2>Mes recherches de stages</h2>
-                <h3>Candidatures</h3>
+                <h3 className="align">Candidatures</h3>
                 <PopAjoutCandidature />
                 <Tableau 
                     chemin = 'http://localhost:7146/api/tableau/candidature'
                     nbColonne = {5} 
                     nomColonne = {["n° de candidature", "Entreprise", "Origine de l'offre", "", ""]}/>
-                <h3>Entretiens</h3>
+                <h3 className="align">Entretiens</h3>
                 <PopAjoutEntretien />
                 <Tableau 
                     chemin = 'http://localhost:7146/api/tableau/entretien'
                     nbColonne = {6} 
                     nomColonne = {["Personel", "Entreprise", "Intervenant", "Date", "", ""]}/>
-                <h3>Stage</h3>
+                <h3 className="align">Stage</h3>
                 <PopAjoutStage />
                 <Tableau 
                     chemin = 'http://localhost:7146/api/tableau/stage'
@@ -59,7 +59,7 @@ class RechercheStage extends React.Component {
     }
 }
 
-class TableauBord extends React.Component{
+class TableauBord extends Component{
     render(){
         return(
             <div >

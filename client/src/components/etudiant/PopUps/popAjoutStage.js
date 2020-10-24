@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {Component} from 'react';
 import UsePopup from '../../../utilitaires/PopUp';
 
-class PopAjoutStage extends React.Component{
+class PopAjoutStage extends Component{
     constructor(props){
         super(props);
         this.state = {

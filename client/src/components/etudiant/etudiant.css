@@ -1,5 +1,5 @@
 #partieGauche{
-    width: 255px;
+    width: 300px;
     height: 100%;
     float:left;
     background-color: white;
@@ -11,7 +11,7 @@
 .tableauBord{
     margin-left: 10px;
     margin-top: 10px;
-    width : calc(100% - 290px);
+    width : calc(100% - 330px);
     float:left;
     background-color: white;
     padding: 5px;
@@ -19,6 +19,10 @@
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-#info{
-    margin-top: 36px;
+.modifier{
+    margin-left: 100px;
+}
+
+.ajouter{
+    margin-left: 60px;
 }

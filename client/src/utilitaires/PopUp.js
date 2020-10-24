@@ -1,7 +1,7 @@
 import './popup.css'
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
-class Popup extends React.Component {
+class Popup extends Component {
     render() {
         return (
             <div className='popup'>
@@ -30,7 +30,7 @@ class UsePopup extends Component {
     render() {
         return (
             <div>
-                <button onClick={this.togglePopup.bind(this)}> +</button>
+                <button className="btnPlus" onClick={this.togglePopup.bind(this)}>+</button>
         
                 {this.state.showPopup ?
                     <Popup text={this.props.text} contenu = {this.props.contenu} closePopup={this.togglePopup.bind(this)} />

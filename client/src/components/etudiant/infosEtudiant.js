@@ -1,13 +1,12 @@
-import React from 'react';
+import React, {Component} from 'react';
 import "../../general.css";
 import "./etudiant.css";
 
-class InfoPerso extends React.Component {
+class InfoPerso extends Component {
     constructor(props){
         super(props);
         this.state = {
             etudiants: [],
-            numEtudiant : "e22006666",
             nom : "DURDEN",
             prenom : "Tyler",
             filiere : "ILIADE",
@@ -50,8 +49,7 @@ class InfoPerso extends React.Component {
             <div>
                 <h2>Informations personelles</h2>
                 <div className="align">
-                    <p>Mail : <br/>
-                        Nom : <br/>
+                    <p>Nom : <br/>
                         Prénom : <br/>
                         Filière : <br/>
                         Date de naissance : <br />
@@ -59,22 +57,21 @@ class InfoPerso extends React.Component {
                         Candidat à l'alternance : </p>
                 </div>
                 <div id="info">
-                    <p>{this.state.numEtudiant}<br/>
-                        {this.state.nom}<br/>
+                    <p>{this.state.nom}<br/>
                         {this.state.prenom}<br/>
                         {this.state.filiere}<br/>
                         {this.state.dateNaissance}<br />
                         {this.state.nationalite}<br />
                         {this.state.alternance}</p>
                 </div><br />
-                <button type="button" onClick={() => console.log("modifier")}>Modifier</button>
+                <button className="modifier" type="button" onClick={() => console.log("modifier")}>Modifier</button>
             </div>
         );
     }
 }
 
 
-class GestionEntreprise extends React.Component{
+class GestionEntreprise extends Component{
     render(){
         return (
             <div>
@@ -85,13 +82,13 @@ class GestionEntreprise extends React.Component{
                     S'il l'approuve pas il a le droit de la supprimer du système. 
                     Dans ce cas toutes vos candiatures, vos entretiens et vos stage en lien avec cette entreprise seront supprimé.
                 </p>
-                <button type="button">Ajouter une entreprise</button>
+                <button className="ajouter" type="button">Ajouter une entreprise</button>
             </div>
         );
     }
 }
 
-class Info extends React.Component{
+class Info extends Component{
     render(){
         return (
             <div id="partieGauche">

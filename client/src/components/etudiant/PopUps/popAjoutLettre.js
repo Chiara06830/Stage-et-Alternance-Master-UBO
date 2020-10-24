@@ -1,45 +1,66 @@
-import React from 'react';
+import React, {Component} from 'react';
+import axios from 'axios';
+import './style.css'
 import UsePopup from '../../../utilitaires/PopUp';
 
-class PopAjoutLettre extends React.Component {
+class PopAjoutLettre extends Component {
     constructor(props){
         super(props);
         this.state = {
-            lettre : ""
+            cv : "",
+            nomFichier: "C://"
         }
     }
 
     //------------- Sauvegarde des données -------------//
 
-    sauvLettre(event){
-        //this.setState({lettre: event.target.value});
+    sauvCV(event){
+        this.setState({cv: event.target.files[0]});
+        this.setState({nomFichier: event.target.files[0].name});
     }
 
     //------------- Envoie des données -------------//
-    handleLettre(){
 
+    async handleCv(event){
+        event.preventDefault();
+        const formData = new FormData();
+        formData.append("file", this.state.cv);
+
+        try{
+            const res = await axios.post('http://localhost:7146/upload/cv', formData, {
+                headers: {
+                    'Content-Type': 'multipart/from-data'
+                }
+            });
+
+            const {fileName, filePath} = res.data;
+            //setUploadedFile({fileName, filePath});
+        }catch(err){
+            if(err.response.status === 500){
+                console.log('There wes a problem with the server');
+            }else {
+                console.log(err.response.data.msg);
+            }
+        }
     }
-
-    //------------- Fonction utilitaires -------------//
-
-    searchFile(){
-
-    }
+    
+    //------------- Rendu -------------//
 
     render(){
-        const contenu =
+        const contenu = 
             <div>
-                <form onSubmit={this.handleLettre}>
-                    <input type="text" placeholder="C://" value={this.state.cv} onChange={this.sauvLettre()}/>
-                    <button type="button" onClick={this.searchFile()}>Parcourir</button><br/>
+                <form onSubmit = {(event) => this.handleCv(event)}>
+                    <div className="custom-file mb-4">
+                        <input type="file" className="custom-file-input" id="customFile" onChange={(event) => this.sauvCV(event)}/>
+                        <label className="custom-file-label" htmlFor="customFile">{this.state.nomFichier}</label>
+                    </div>
                     <p>Seul le format pdf est accepté</p>
-                    <p>Entreprise visée :</p>
-                    <input type="text" value={this.state.cv}/>
-                    <button type="submit">Valider</button>
+                    <input type="submit" value="Valider" ></input>
                 </form>
-            </div>;
-        return <UsePopup text='Déposer une lettre de motivation' contenu = {contenu}/>;
-    }
+                
+            </div>
+            return <UsePopup text='Déposer une lettre de motivation' contenu = {contenu}/>;
+        } 
 }
 
 export default PopAjoutLettre;

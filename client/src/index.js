@@ -1,16 +1,16 @@
-import React from 'react';
+import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import "./general.css";
 import Etudiant from"./components/etudiant/pageEtudiant";
 import Enseignant from './components/enseignant/pageEnseignant';
 
-class Connexion extends React.Component {
+class Connexion extends Component {
     constructor(props){
         super(props);
         this.state = {
             mail : '',
             mdp: '',
-            charger : 1
+            charger : 0
         };
 
         this.sauvMdp = this.sauvMdp.bind(this);
@@ -27,6 +27,10 @@ class Connexion extends React.Component {
     }
 
     handleSubmit(event) {
+        if(this.state.mail === "jean.dupont@etudiant.univ-brest.fr"){
+            console.log("pourt");
+            
+        }
         if(this.state.mail.match(/^.*@etudiant.univ-brest.fr$/)){
             console.log("etudiant");
             this.setState({charger : 1});
@@ -36,6 +40,8 @@ class Connexion extends React.Component {
         }else{
             
         }
+
+        
             
         event.preventDefault();
     }

@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {Component} from 'react';
 import "../../general.css";
 
-class Enseignant extends React.Component {
+class Enseignant extends Component {
     render(){
         return(
             <div>

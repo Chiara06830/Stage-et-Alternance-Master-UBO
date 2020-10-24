@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {Component} from 'react';
 import "../general.css";
 import "../components/etudiant/etudiant.css";
 
-class Tableau extends React.Component{
+class Tableau extends Component{
     constructor(props){
         super(props);
         this.nbCol = 0;

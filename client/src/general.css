@@ -36,3 +36,14 @@ tr:nth-child(even) {
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+.soustexte{
+    margin-top: -0px;
+    font-size: 12px;
+}
+
+.lien{
+    background: none;
+    border : none;
+    color: #0056b3;
+}

@@ -3,47 +3,29 @@ import ReactDOM from 'react-dom';
 import "./general.css";
 import Etudiant from"./components/etudiant/pageEtudiant";
 import Enseignant from './components/enseignant/pageEnseignant';
+import Inscription from './inscrpition';
 
 class Connexion extends Component {
     constructor(props){
         super(props);
         this.state = {
-            mail : '',
-            mdp: '',
             charger : 0
-        };
-
-        this.sauvMdp = this.sauvMdp.bind(this);
-        this.sauvMail = this.sauvMail.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    sauvMdp(event) {
-        this.setState({mdp: event.target.value});
-    }
-
-    sauvMail(event){
-        this.setState({mail: event.target.value})
-    }
-
-    handleSubmit(event) {
-        if(this.state.mail === "jean.dupont@etudiant.univ-brest.fr"){
-            console.log("pourt");
-            
         }
-        if(this.state.mail.match(/^.*@etudiant.univ-brest.fr$/)){
-            console.log("etudiant");
-            this.setState({charger : 1});
-        }else if(this.state.mail.match(/^.*@univ-brest.fr$/)){
-            console.log("Enseignant");
-            this.setState({charger : 2});
-        }else{
-            
-        }
+    }
 
-        
-            
-        event.preventDefault();
+    componentDidMount(){
+        this.handleSubmit();
+    }
+
+    handleSubmit() {
+        fetch('http://localhost:7146/login')
+            .then(response => response.json())
+            .then(data =>{
+                this.setState({
+                    charger: data['page']
+                });
+            })
+            .catch(error => this.setState({ error}));
     }
 
     render() {
@@ -51,14 +33,16 @@ class Connexion extends Component {
             return (
                 <div className="connexion">
                     <h1>Connexion</h1>
-                    <form onSubmit={this.handleSubmit}>
-                        <input type="text" placeholder="Adresse mail" value={this.state.mail} onChange={this.sauvMail}/><br/>
-                        <input type="text" placeholder="Mot de passe" value={this.state.mdp} onChange={this.sauvMdp}/><br/>
-                        <button type="submit">Se connecter</button><br/>
+                    <form action="http://localhost:7146/login" method="POST" >
+                        <input type="text" placeholder="Adresse mail" name="email"/><br/>
+                        <input type="text" placeholder="Mot de passe" name="password"/><br/>
+                        <button type="submit" onClick={this.handleSubmit()}>Se connecter</button><br/>
                     </form>
                     <a href="google.com">Mot de passe oublié</a><br/>
                     <p>Vous n'êtes pas encore inscrit ?</p>
-                    <a href="google.com">S'inscrire</a>
+                    <form action="http://localhost:7146/inscription" method="POST" >
+                        <button className="lien" type="submit">S'inscrire</button>
+                    </form>
                 </div>
             );
         }else if(this.state.charger === 1){
@@ -69,10 +53,16 @@ class Connexion extends Component {
             return(
                 <Enseignant />
             );
+        }else if(this.state.charger === 3){
+            return(
+                <Inscription />
+            );
         }
         
     }
 }
+
+export default Connexion;
 
 ReactDOM.render(
     <Connexion />,

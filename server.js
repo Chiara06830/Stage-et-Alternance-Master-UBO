@@ -1,6 +1,7 @@
 const cors = require('cors');
 const express = require('express');
 const fileUpload = require('express-fileupload');
+const bodyParser = require('body-parser');
 const app = express();
 const port = 7146;
 
@@ -16,10 +17,56 @@ let connection = mysql.createConnection({
 
 app.use(cors());
 app.use(fileUpload());
+app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.json());
 
-//-----------Infos page etudiant-----------
+//-----------Identification-----------
+let page = 0; //0: connexion, 1: etudiant, 2:enseignant, 3: inscrption
+let idUser = -1;
+app.post('/login', (req, res) => {
+    //******TO DO****** 
+    //<Attribuer idUser>
+    
+    if(req.body.email.match(/^.*@etudiant.univ-brest.fr$/)){
+        page = 1;
+    }else if(req.body.password.match(/^.*@univ-brest.fr$/)){
+        page = 2;
+    }
+});
 
-app.get('/api/etudiants', (req, res) => {
+app.get('/login', (req, res) =>{
+    res = res.json({"page" : page});
+});
+
+app.post('/retourLogin', (req, res) =>{
+    page = 0;
+});
+
+//-----------Inscription-----------
+app.post('/inscription', (req, res) => {
+    page = 3;
+});
+
+app.post('/inscription/creation', (req, res) => {
+    const etudiant={
+        "prenom" : req.body.prenom,
+        "nom" : req.body.nom,
+        "mail" : req.body.mail,
+        "date_naissance" : req.body.date_naissance,
+        "nationalite" : "",
+        "mail_ubo" : req.body.mailUBO,
+        "password" : req.body.password,
+        "info_mail" : req.body.infoMail
+    };
+    console.log(etudiant);
+    page = 0;
+});
+
+//-------------------------ETUDIANT-------------------------//
+
+//-----------Récupération infos perso-----------
+
+app.get('/api/etudiant/info', (req, res) => {
     const etudiants =
         {"adresse_mail" : 'jean.dupont@etudiant.univ-brest.fr', 
         "nom_etudiant" : "Dupont", 
@@ -47,8 +94,8 @@ app.get('/api/etudiants', (req, res) => {
     res = res.json(etudiants);
 });
 
-//-----------------------
-app.post('/upload/cv', (res, req) =>{
+//-----------Récupération CV et Lettre-----------
+app.post('/upload/etudiant/cv', (res, req) =>{
     if(req.files === null){ //si on essaie de récuperer rien du tout
         return res.statusCode(400).json({msg : 'Auncun fihcier chargé'});
     }
@@ -65,12 +112,12 @@ app.post('/upload/cv', (res, req) =>{
     });
 });
 
-app.post('/upload/lettre', (res, req) =>{
+app.post('/upload/etudiant/lettre', (res, req) =>{
     if(req.files === null){ //si on essaie de récuperer rien du tout
         return res.statusCode(400).json({msg : 'Auncun fihcier chargé'});
     }
 
-    const file = req.files.cv;
+    const file = req.files.lettre;
 
     file.mv(`${__dirname}/client/public/uploads/cv/${file.name}`, err =>{
         if(err){
@@ -82,7 +129,13 @@ app.post('/upload/lettre', (res, req) =>{
     });
 });
 
-//-----------Tableaux page etudiant-----------
+//-----------Récupération Candidature Entretien et Stage-----------
+
+app.post('/api/etudiant/candidature', (res, req) =>{
+    console.log(req.body);
+});
+
+//-----------Transmettre tableaux page etudiant-----------
 
 app.get('/api/tableau/cv', (req, res) => {
     const contenu ={};

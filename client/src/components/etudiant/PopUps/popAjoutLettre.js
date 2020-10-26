@@ -27,7 +27,7 @@ class PopAjoutLettre extends Component {
         formData.append("file", this.state.cv);
 
         try{
-            const res = await axios.post('http://localhost:7146/upload/cv', formData, {
+            const res = await axios.post('http://localhost:7146/upload/etudiant/lettre', formData, {
                 headers: {
                     'Content-Type': 'multipart/from-data'
                 }

@@ -21,7 +21,7 @@ class InfoPerso extends Component {
     }
 
     fetchUsers() {
-        fetch('http://localhost:7146/api/etudiants')
+        fetch('http://localhost:7146/api/etudiant/info')
             .then(response => response.json())
             .then(data =>{
                 this.setState({

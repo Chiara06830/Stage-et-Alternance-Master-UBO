@@ -11,6 +11,7 @@
   "author": "Chiara RELEVAT",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "concurrently": "^5.3.0",
     "cors": "^2.8.5",
     "create-react-app": "^3.4.1",

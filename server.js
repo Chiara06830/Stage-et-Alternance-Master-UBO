@@ -29,7 +29,7 @@ app.post('/login', (req, res) => {
     
     if(req.body.email.match(/^.*@etudiant.univ-brest.fr$/)){
         page = 1;
-    }else if(req.body.password.match(/^.*@univ-brest.fr$/)){
+    }else if(req.body.email.match(/^.*@univ-brest.fr$/)){
         page = 2;
     }
 });
@@ -48,17 +48,7 @@ app.post('/inscription', (req, res) => {
 });
 
 app.post('/inscription/creation', (req, res) => {
-    const etudiant={
-        "prenom" : req.body.prenom,
-        "nom" : req.body.nom,
-        "mail" : req.body.mail,
-        "date_naissance" : req.body.dateNaissance,
-        "nationalite" : req.body.nationalite,
-        "mail_ubo" : req.body.mailUBO,
-        "password" : req.body.password,
-        "info_mail" : req.body.infoMail
-    };
-    console.log(etudiant);
+    console.log(req.body);
     page = 0;
 });
 
@@ -170,6 +160,36 @@ app.get('/api/tableau/stage', (req, res) => {
     res = res.json(contenu);
 });
 
+//-------------------------ENSEIGNANT-------------------------//
+app.get('/api/enseigant/info', (req, res) => {
+    const enseignant = {
+        adresse_mail : "laurence.duval@univ-brest.fr",
+        nom_enseignant : "Duval",
+        prenom_enseignant : "Laurence"
+    }
+
+    res = res.json(enseignant);
+});
+
+app.get('/tableau/ensseignant/cv', (req, res) => {
+    const contenu ={
+        0:{"Nom":"prout", "Prénom":"pouet", "Filière": "woop", "Entreprise": "poop", "Lettre" : "boop", "Traiter": ""}
+    };
+
+    res = res.json(contenu);
+});
+
+app.get('/tableau/ensseignant/lettre', (req, res) => {
+    const contenu = {}
+
+    res = res.json(contenu);
+});
+
+app.get('/tableau/ensseignant/historique', (req, res) => {
+    const contenu = {}
+
+    res = res.json(contenu);
+});
 
 //-----------lancement du serveur-----------
 

@@ -18,29 +18,20 @@ class PopAjoutCandidature extends Component {
 
     //------------- Envoie des données -------------//
 
-    async handleCandidature(event){
-        event.preventDefault();
-
-        const data = JSON.stringify(this.state);
-
-        try{
-            await axios.post('http://localhost:7146/api/etudiant/candidature', data, {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-        }catch(err){
-            if(err.response.status === 500){
-                alert('There was a problem with the server');
-            }else {
-                alert(err.response.data.msg);
-            }
-        }
+    async handleCandidature(){
+        fetch('http://localhost:7146/api/etudiant/candidature', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: this.state
+        });
     }
 
     render(){
         const contenu = 
-                <form onSubmit={(event) => this.handleCandidature(event)}>
+                <form onSubmit={() => this.handleCandidature()}>
                     <p>Entreprise :<br/>
                         <input type="text" value={this.state.entrepriseCandidature} onChange={(event) => this.sauvEntrepriseCandidature(event)}/> <br/>
                         <a href="google.com">Si l'entreprise n'existe pas, ajouter l'entreprise</a>

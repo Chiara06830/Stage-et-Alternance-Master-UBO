@@ -19,13 +19,13 @@ class Documents extends Component{
                 <Tableau 
                     chemin = 'http://localhost:7146/api/tableau/cv'
                     nbColonne = {7} 
-                    nomColonne = {["Date de dépôt", "CV", "Date consultation", "Enseignant consultant", "Commentaire", "   ", "   "]} />
+                    nomColonne = {["Date de dépôt", "CV", "Date consultation", "Enseignant consultant", "Commentaire", "Modifier", "Supprimer"]} />
                 <h3 className="align">Lettres de motivation</h3>
                 <PopAjoutLettre/>
                 <Tableau 
                     chemin = 'http://localhost:7146/api/tableau/lettre'
                     nbColonne = {9} 
-                    nomColonne = {["Date de dépôt", "Entreprise", "Lettre", "Validé/A refaire", "Date de consultation", "Enseignant consultant", "Commentaire", "   ", "   "]}/>
+                    nomColonne = {["Date de dépôt", "Entreprise", "Lettre", "Validé/A refaire", "Date de consultation", "Enseignant consultant", "Commentaire", "Modifier", "Supprimer"]}/>
             </div>
         );
     }
@@ -41,19 +41,19 @@ class RechercheStage extends Component {
                 <Tableau 
                     chemin = 'http://localhost:7146/api/tableau/candidature'
                     nbColonne = {5} 
-                    nomColonne = {["n° de candidature", "Entreprise", "Origine de l'offre", "", ""]}/>
+                    nomColonne = {["n° de candidature", "Entreprise", "Origine de l'offre", "Modifier", "Supprimer"]}/>
                 <h3 className="align">Entretiens</h3>
                 <PopAjoutEntretien />
                 <Tableau 
                     chemin = 'http://localhost:7146/api/tableau/entretien'
                     nbColonne = {6} 
-                    nomColonne = {["Personel", "Entreprise", "Intervenant", "Date", "", ""]}/>
+                    nomColonne = {["Personel", "Entreprise", "Intervenant", "Date", "Modifier", "Supprimer"]}/>
                 <h3 className="align">Stage</h3>
                 <PopAjoutStage />
                 <Tableau 
                     chemin = 'http://localhost:7146/api/tableau/stage'
                     nbColonne = {5} 
-                    nomColonne = {["Entreprise", "Type de contrat", "Posibilité d'alternance", "", ""]}/>
+                    nomColonne = {["Entreprise", "Type de contrat", "Posibilité d'alternance", "Modifier", "Supprimer"]}/>
             </div>
         );
     }

@@ -1,5 +1,5 @@
 #partieGauche{
-    width: 300px;
+    width: 30%;
     height: 100%;
     float:left;
     background-color: white;
@@ -11,7 +11,7 @@
 .tableauBord{
     margin-left: 10px;
     margin-top: 10px;
-    width : calc(100% - 330px);
+    width : calc(100% - 31%);
     float:left;
     background-color: white;
     padding: 5px;

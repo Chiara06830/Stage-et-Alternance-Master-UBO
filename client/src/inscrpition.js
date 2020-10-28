@@ -17,7 +17,51 @@ class Inscription extends Component{
     constructor(props){
         super(props);
         this.state = {
-            page : 3
+            page : 3,
+
+            password:'',
+            passwordVerif : ''
+        }
+    }
+
+    sauvPassword(event){this.setState({password : event.target.value})}
+    sauvPassVerif(event){this.setState({passwordVerif : event.target.value})}
+
+    secuMotDePasse(){
+        const password = this.state.password;
+        
+        let maj = false;
+        for(let i=0; i<password.length; i++){
+            if(password.charAt(i).toUpperCase() == password.charAt(i)){
+                maj = true;
+            }
+        }
+
+        let spe = false;
+        let pattern = new RegExp(/[~`!#$%\^&*+=\-\[\]\';,/{}|\":<>\?]/);
+        if(pattern.test(password)){
+            spe = true;
+        }
+
+        if(password.length > 0){
+            if(password.length > 8 && maj && spe){
+                return(<label className="soustexte bon"> Sécurité : Bonne </label>);
+            }else if(maj || spe || password.length > 8){
+                return(<label className="soustexte moyen"> Sécurité : Moyenne </label>);
+            }else {
+                return(<label className="soustexte mauvais"> Sécurité : Mauvaise </label>);
+            }
+        } 
+    }
+
+    verifMotDePasse(){
+        const password = this.state.password;
+        const verif = this.state.passwordVerif;
+
+        if(verif.length > 0 && password != verif){
+            return(<label className="soustexte mauvais"> Les mots de passe ne sont pas identiques </label>);
+        }else{
+            return(<label></label>);
         }
     }
     
@@ -35,33 +79,37 @@ class Inscription extends Component{
     render(){
         if(this.state.page === 3){
             return (
-                <div >
-                    <h2 className="centre">Inscription</h2>
+                <div className="centre element">
+                    <h2 >Inscription</h2>
                     <form action="http://localhost:7146/inscription/creation" method="POST">
-                        <div className="align">
-                            <h3>Informations personelles</h3>
-                            <Saisie text="Prénom *" name="prenom"/>
-                            <Saisie text="Nom *" name="nom"/>
-                            <Saisie text="Adresse mail (personelle)" name="mail"/>
-                            <label>Date de naissance *</label><br/>
-                            <input type="date" name="dateNaissance"/><br/>
-                            <label>Nationalité *</label><br/>
-                            <select>
-                                <option>Française</option>
-                                <option>Autre</option>
-                            </select>
+                        <div className="display">
+                            <div className="align gauche perso">
+                                <h3>Informations personelles</h3>
+                                <Saisie text="Prénom *" name="prenom"/>
+                                <Saisie text="Nom *" name="nom"/>
+                                <Saisie text="Adresse mail (personelle)" name="mail"/>
+                                <label>Date de naissance *</label><br/>
+                                <input type="date" name="dateNaissance"/><br/>
+                                <label>Nationalité *</label><br/>
+                                <select name="nationalite">
+                                    <option>Française</option>
+                                    <option>Autre</option>
+                                </select>
+                            </div>
+                            <div className="gauche">
+                                <h3>Informations de connexion</h3>
+                                <Saisie text="Identifiant (adresse mail UBO) *" name="mailUBO"/>
+                                <label>Mot de passe *</label><br/>
+                                <input type="password" value={this.state.password} onChange={(event) => this.sauvPassword(event)} name="password"/>
+                                {this.secuMotDePasse()}<br/>
+                                <p className="soustexte">Doit obligatoirement contenir 8 caractères comprenant lettres, chiffres et caractère spéciaux</p>
+                                <label>Confirmation du mot de passe *</label><br/>
+                                <input type="password" value={this.state.passwordVerif} onChange={(event) => this.sauvPassVerif(event)} name="passwordVerif"/><br/>
+                                {this.verifMotDePasse()}
+                            </div>
                         </div>
-                        <div>
-                            <h3>Informations de connexion</h3>
-                            <Saisie text="Identifiant (adresse mail UBO) *" name="mailUBO"/>
-                            <label>Mot de passe</label><br/>
-                            <input type="password" name="password"/>
-                            <p className="soustexte">Doit obligatoirement contenir 8 caractères comprenant lettres, chiffres et caractère spéciaux</p>
-                            <label>Confirmation du mot de passe</label><br/>
-                            <input type="password" name="passwordVerif"/><br/>
-                            <input type="checkbox" id="infoMail" name="infoMail"/> <label htmlFor="infoMail">J'autorise l'application à m'informer par mail</label> <br/>
-                            <input type="checkbox" id="exact" name="exact"/> <label htmlFor="exact">Je certifie sur l'honneur l'exactitude des renseignements fournis</label>
-                        </div>
+                        <input type="checkbox" id="infoMail" name="infoMail"/> <label htmlFor="infoMail">J'autorise l'application à m'informer par mail</label> <br/>
+                        <input type="checkbox" id="exact" name="exact"/> <label htmlFor="exact">Je certifie sur l'honneur l'exactitude des renseignements fournis *</label><br/>
                         <button type="submit" onClick={() => this.handleSubmit()}>Créer le compte</button>
                     </form>
 

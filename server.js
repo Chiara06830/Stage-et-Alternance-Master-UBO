@@ -52,8 +52,8 @@ app.post('/inscription/creation', (req, res) => {
         "prenom" : req.body.prenom,
         "nom" : req.body.nom,
         "mail" : req.body.mail,
-        "date_naissance" : req.body.date_naissance,
-        "nationalite" : "",
+        "date_naissance" : req.body.dateNaissance,
+        "nationalite" : req.body.nationalite,
         "mail_ubo" : req.body.mailUBO,
         "password" : req.body.password,
         "info_mail" : req.body.infoMail

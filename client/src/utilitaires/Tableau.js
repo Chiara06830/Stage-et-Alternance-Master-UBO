@@ -37,7 +37,7 @@ class Tableau extends Component{
         for(let j=0; j<Object.keys(this.state.contenu).length; j++){
             infos+="<tr>";
             for(let i=0; i<this.nbCol; i++){
-                if(this.nomColonne[i] == "CV" || this.nomColonne[i] == "Lettre"){
+                if(this.nomColonne[i] == "CV" || this.nomColonne[i] == "Lettre" || this.nomColonne[i] == "Document"){
                     console.log("passage");
                     infos += "<td style=\"text-align: center\"/> <img src=\"/img/eye-2387853_960_720.webp\" alt=\"bouton voir\" width=\"30\" height=\"30\">";
                 }else if(this.nomColonne[i] == "Traiter" || this.nomColonne[i] == "Modifier"){

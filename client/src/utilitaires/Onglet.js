@@ -5,11 +5,12 @@ class Onglet extends Component{
         super(props);
         this.noms = [];
         this.contenu = [];
-        this.numActive = 0;
+        this.state = {
+            numActive : 0
+        }
     }
 
     changeNum(i){
-        console.log("coucou");
         this.setState({numActive : i});
     }
 
@@ -18,30 +19,30 @@ class Onglet extends Component{
         for(let i=0; i<lignes.length; i++){
             lignes[i].onclick = () => this.changeNum(i);
         }
-        console.log(lignes);
-        console.log(this.numActive);
     }
 
     createOnglet(noms, contenus){
+        console.log(this.state.numActive);
         this.noms = noms;
         this.contenu = contenus;
 
+
         let lignes = "";
         for(let i=0; i<this.noms.length; i++){
-            if(i === this.numActive){
+            if(i === this.state.numActive){
                 lignes += "<li class=\"active ligne\"><button type=\"button\" onlick=\"() => changeNum(" + i + ")\">" + this.noms[i] + "</button></li>";
             }else{
                 lignes += "<li class=\"ligne\"><button type=\"button\"  onlick=\"() => changeNum(" + i + ")\">" + this.noms[i] + "</button></li>";
             }
         }
-
+        
         return(<ul id="onglets" dangerouslySetInnerHTML={{ __html: lignes }}/>);
     }
 
     afficherContenu(){
         return(
             <div className="stats">
-                {this.contenu[this.numActive]}
+                {this.contenu[this.state.numActive]}
             </div>
         );
     }

@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import Tableau from "../../utilitaires/Tableau";
+import Onglet from "../../utilitaires/Onglet";
 import "../../general.css";
 import "../etudiant/etudiant.css";
+import "./enseignant.css";
 
 
 class Documents extends Component{
@@ -24,6 +26,21 @@ class Documents extends Component{
     }
 }
 
+class Statistique extends Component{
+    
+    render(){
+        const contenu = <p>pouet</p>;
+        return (
+            <div className="tableauBord">
+                <h2>Statistiques</h2>
+                <Onglet 
+                    noms={["Suivi des étudiants", "Nombre de stages", "Nombre de candidatures alternance", "Nombre alternances"]}
+                    contenus = {[contenu, contenu, contenu, contenu]}
+                />
+            </div>
+        );
+    }
+}
 
 
 class TableauBord extends Component{
@@ -31,6 +48,7 @@ class TableauBord extends Component{
         return(
             <div >
                 <Documents />
+                <Statistique />
             </div>
         );
     }

@@ -128,7 +128,9 @@ app.post('/api/etudiant/candidature', (res, req) =>{
 //-----------Transmettre tableaux page etudiant-----------
 
 app.get('/api/tableau/cv', (req, res) => {
-    const contenu ={};
+    const contenu ={
+        0:{"Date de dépôt" : "prout", "CV" : "woop", "Date consultation": "pilou", "Enseignant consultant" : "pata", "Commentaire" : "pouet"}
+    };
 
     res = res.json(contenu);
 });

@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
 //-----------Identification-----------
-let page = 0; //0: connexion, 1: etudiant, 2:enseignant, 3: inscrption
+let page = 0; //0: connexion, 1: etudiant, 2:enseignant, 3: inscrption, 4:admin
 let idUser = -1;
 app.post('/login', (req, res) => {
     //******TO DO****** 
@@ -31,6 +31,8 @@ app.post('/login', (req, res) => {
         page = 1;
     }else if(req.body.email.match(/^.*@univ-brest.fr$/)){
         page = 2;
+    }else if(req.body.email.match("admin")){
+        page = 4;
     }
 });
 

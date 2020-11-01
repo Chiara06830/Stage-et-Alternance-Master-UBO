@@ -2,9 +2,18 @@ import React, {Component} from 'react';
 
 class SuiviEtudiant extends Component{
     render(){
-        return(
-            <p>pouep</p>
-        );
+        if(this.props.admin){
+            return(
+                <div>
+                    <p>pouep</p>
+                    <button>Paramètre</button>
+                </div>
+            );
+        }else {
+            return(
+                <p>pouep</p>
+            );
+        }
     }
 }
 

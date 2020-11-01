@@ -31,28 +31,14 @@ class Documents extends Component{
 }
 
 class Statistique extends Component{
-    
     render(){
         return (
             <div className="tableauBord">
                 <h2>Statistiques</h2>
                 <Onglet 
                     noms={["Suivi des étudiants", "Nombre de stages", "Nombre de candidatures alternance", "Nombre alternances"]}
-                    contenus = {[<Suivi />, <NbStage/>, <NbDemandeAlternance />, <NbAlternance />]}
+                    contenus = {[<Suivi admin={this.props.admin}/>, <NbStage/>, <NbDemandeAlternance />, <NbAlternance />]}
                 />
-            </div>
-        );
-    }
-}
-
-
-class TableauBord extends Component{
-    render(){
-        return(
-            <div >
-                <Documents />
-                <Statistique />
-                <Historique />
             </div>
         );
     }
@@ -70,6 +56,18 @@ class Historique extends Component{
                 />
             </div>
             
+        );
+    }
+}
+
+class TableauBord extends Component{
+    render(){
+        return(
+            <div >
+                <Documents />
+                <Statistique admin={this.props.admin}/>
+                <Historique />
+            </div>
         );
     }
 }

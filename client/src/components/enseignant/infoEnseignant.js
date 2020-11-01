@@ -48,7 +48,7 @@ class InfoPerso extends Component {
                         {this.state.prenom}
                     </p>
                 </div><br />
-                <button className="modifier" type="button" onClick={() => console.log("modifier")}>Modifier</button>
+                <button className="btnInfo" type="button" onClick={() => console.log("modifier")}>Modifier</button>
             </div>
         );
     }
@@ -67,16 +67,36 @@ class GestionEntreprise extends Component{
                     S'il l'approuve pas il a le droit de la supprimer du système. 
                     Dans ce cas toutes vos candiatures, vos entretiens et vos stage en lien avec cette entreprise seront supprimé.
                 </p>
-                <button className="ajouter" type="button">Ajouter une entreprise</button>
+                <button className="btnInfo" type="button">Ajouter une entreprise</button>
 
                 <p>
                     Les étudiants peuvent rajouter des entreprises quand elle ne sont pas déjà dans le système.
                     Vous pouvez consulter la liste des entreprises et éventuellement retirer les entreprises si elles ne correspondent pas à vos critères.
                     Dans ce cas les candiatures, entretiens et stage des élèves en lien avec cette entreprise seront supprimés.
                 </p>
-                <button type="button">Consulter la liste des entreprises</button>
+                <button className="btnInfo" type="button">Consulter la liste des entreprises</button>
             </div>
         );
+    }
+}
+
+class GestionUser extends Component{
+    render(){
+        const commun = <div>
+                <h2>Gestion des utilisateurs</h2>
+                <p>Vous pouvez ajouter des comptes étudiants.</p>
+                <button className="btnInfo" type="button">Ajouter un étudiant</button>
+            </div>
+        if(!this.props.admin){
+            return(commun);
+        }else {
+            return(
+                <div>
+                    {commun}
+                    <button className="btnInfo" type="button">Ajouter un enseignant</button>
+                </div>
+            );
+        }
     }
 }
 
@@ -86,6 +106,7 @@ class Info extends Component{
             <div id="partieGauche">
                 <InfoPerso />
                 <GestionEntreprise />
+                <GestionUser admin={this.props.admin}/>
             </div>
         );
     }

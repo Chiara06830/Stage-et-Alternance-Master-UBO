@@ -64,7 +64,7 @@ class InfoPerso extends Component {
                         {this.state.nationalite}<br />
                         {this.state.alternance}</p>
                 </div><br />
-                <button className="modifier" type="button" onClick={() => console.log("modifier")}>Modifier</button>
+                <button className="btnInfo" type="button" onClick={() => console.log("modifier")}>Modifier</button>
             </div>
         );
     }
@@ -82,7 +82,7 @@ class GestionEntreprise extends Component{
                     S'il l'approuve pas il a le droit de la supprimer du système. 
                     Dans ce cas toutes vos candiatures, vos entretiens et vos stage en lien avec cette entreprise seront supprimé.
                 </p>
-                <button className="ajouter" type="button">Ajouter une entreprise</button>
+                <button className="btnInfo" type="button">Ajouter une entreprise</button>
             </div>
         );
     }

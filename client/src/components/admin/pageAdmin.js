@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import "../../general.css";
-import Info from "./infoEnseignant";
-import TableauBord from "./boardEnseignant";
+import Info from "../enseignant/infoEnseignant";
+import TableauBord from "../enseignant/boardEnseignant";
 
-class Enseignant extends Component {
+class Admin extends Component {
     constructor(props){
         super(props);
         this.state = {
-            page : 1
+            page : 4
         }
     }
     
@@ -25,17 +25,17 @@ class Enseignant extends Component {
     render(){
         return(
             <div>
-                <Info admin={false}/>
+                <Info admin={true}/>
                 <form className="deconnexion" action="http://localhost:7146/retourLogin" method="POST">
                     <label>Se déconnecter : </label>
                     <button type="submit" onClick={() => this.deconnecter()}>
                         <img src="/img/deco.png" alt="bouton modifier" width="20" height="20"/>
                     </button>
                 </form>
-                <TableauBord admin={false}/>
+                <TableauBord admin={true}/>
             </div>
         );
     }
 }
 
-export default Enseignant;
+export default Admin;

@@ -4,6 +4,7 @@ import "./general.css";
 import Etudiant from"./components/etudiant/pageEtudiant";
 import Enseignant from './components/enseignant/pageEnseignant';
 import Inscription from './inscrpition';
+import Admin from './components/admin/pageAdmin';
 
 class Connexion extends Component {
     constructor(props){
@@ -57,8 +58,11 @@ class Connexion extends Component {
             return(
                 <Inscription />
             );
+        }else if(this.state.charger === 4){
+            return(
+                <Admin />
+            );
         }
-        
     }
 }
 

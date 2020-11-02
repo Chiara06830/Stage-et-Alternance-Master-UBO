@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PopAjoutEntreprise from "../popAjoutEntreprise"
 import "../../general.css";
 import "./etudiant.css";
 
@@ -64,7 +65,9 @@ class InfoPerso extends Component {
                         {this.state.nationalite}<br />
                         {this.state.alternance}</p>
                 </div><br />
-                <button className="btnInfo" type="button" onClick={() => console.log("modifier")}>Modifier</button>
+                <form action="http://localhost:7146/inscription/modif" method="POST">
+                    <button className="btnInfo" type="submit" >Modifier</button>
+                </form>
             </div>
         );
     }
@@ -82,7 +85,7 @@ class GestionEntreprise extends Component{
                     S'il l'approuve pas il a le droit de la supprimer du système. 
                     Dans ce cas toutes vos candiatures, vos entretiens et vos stage en lien avec cette entreprise seront supprimé.
                 </p>
-                <button className="btnInfo" type="button">Ajouter une entreprise</button>
+                <PopAjoutEntreprise class="btnInfo" bouton="Ajouter une entreprise"/>
             </div>
         );
     }

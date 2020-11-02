@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import Connexion from './index';
-import "./general.css";
+import Connexion from '../index';
+import "../general.css";
 
 class Saisie extends Component{
     render(){
@@ -80,8 +80,8 @@ class Inscription extends Component{
         if(this.state.page === 3){
             return (
                 <div className="centre element">
-                    <h2 >Inscription</h2>
-                    <form action="http://localhost:7146/inscription/creation" method="POST">
+                    <h2 >{this.props.titre}</h2>
+                    <form action={this.props.envoie} method="POST">
                         <div className="display">
                             <div className="align gauche perso">
                                 <h3>Informations personelles</h3>
@@ -110,12 +110,12 @@ class Inscription extends Component{
                         </div>
                         <input type="checkbox" id="infoMail" name="infoMail"/> <label htmlFor="infoMail">J'autorise l'application à m'informer par mail</label> <br/>
                         <input type="checkbox" id="exact" name="exact"/> <label htmlFor="exact">Je certifie sur l'honneur l'exactitude des renseignements fournis *</label><br/>
-                        <button type="submit" onClick={() => this.handleSubmit()}>Créer le compte</button>
+            <button type="submit" onClick={() => this.handleSubmit()}>{this.props.validation}</button>
                     </form>
 
                     <p>Les champs * sont obligatoire</p>
-                    <form action="http://localhost:7146/retourLogin" method="POST">
-                        <button className="lien" type="submit" onClick={() => this.handleSubmit()}>Se connecter</button>
+                    <form action={this.props.chemin} method="POST">
+            <button className="lien" type="submit" onClick={() => this.handleSubmit()}>{this.props.retour}</button>
                     </form>
                     
                 </div>

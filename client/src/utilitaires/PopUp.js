@@ -18,7 +18,7 @@ class Popup extends Component {
 class UsePopup extends Component {
     constructor(props){
     super(props);
-    this.state = { showPopup: false };
+        this.state = { showPopup: false };
     }
 
     togglePopup() {
@@ -30,7 +30,7 @@ class UsePopup extends Component {
     render() {
         return (
             <div>
-                <button className="btnPlus" onClick={this.togglePopup.bind(this)}>+</button>
+                <button className={this.props.class} onClick={this.togglePopup.bind(this)}>{this.props.bouton}</button>
         
                 {this.state.showPopup ?
                     <Popup text={this.props.text} contenu = {this.props.contenu} closePopup={this.togglePopup.bind(this)} />

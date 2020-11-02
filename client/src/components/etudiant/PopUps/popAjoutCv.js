@@ -59,7 +59,7 @@ class PopAjoutCV extends Component {
                 </form>
                 
             </div>
-            return <UsePopup text='Déposer une lettre de motivation' contenu = {contenu}/>;
+            return <UsePopup text='Déposer une lettre de motivation' contenu = {contenu} class="btnPlus" bouton="+"/>;
         } 
 }
 

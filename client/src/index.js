@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import "./general.css";
 import Etudiant from"./components/etudiant/pageEtudiant";
 import Enseignant from './components/enseignant/pageEnseignant';
-import Inscription from './inscrpition';
+import Inscription from './utilitaires/inscrpition';
 import Admin from './components/admin/pageAdmin';
 
 class Connexion extends Component {
@@ -56,11 +56,27 @@ class Connexion extends Component {
             );
         }else if(this.state.charger === 3){
             return(
-                <Inscription />
+                <Inscription 
+                    titre="Inscription"
+                    chemin="http://localhost:7146/retourLogin"
+                    envoie="http://localhost:7146/inscription/creation"
+                    validation="Créer le compte"
+                    retour="Se connecter"
+                />
             );
         }else if(this.state.charger === 4){
             return(
                 <Admin />
+            );
+        }else if(this.state.charger === 5){
+            return(
+                <Inscription 
+                    titre="Modification des informations personelles"
+                    chemin="http://localhost:7146/retourEtudiant"
+                    envoie="http://localhost:7146/entreprise/ajout"
+                    validation="Modifier"
+                    retour="Retour"
+                />
             );
         }
     }

@@ -20,8 +20,10 @@ app.use(fileUpload());
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
+//-------------------------GENERAl-------------------------//
+
 //-----------Identification-----------
-let page = 0; //0: connexion, 1: etudiant, 2:enseignant, 3: inscrption, 4:admin
+let page = 0; //0: connexion, 1: etudiant, 2:enseignant, 3: inscrption, 4:admin, 5:modif inscrtion
 let idUser = -1;
 app.post('/login', (req, res) => {
     //******TO DO****** 
@@ -44,14 +46,28 @@ app.post('/retourLogin', (req, res) =>{
     page = 0;
 });
 
+app.post('/retourEtudiant', (req, res) =>{
+    page = 1;
+});
+
 //-----------Inscription-----------
 app.post('/inscription', (req, res) => {
     page = 3;
 });
 
+app.post('/inscription/modif', (req, res) => {
+    page = 5;
+});
+
 app.post('/inscription/creation', (req, res) => {
     console.log(req.body);
     page = 0;
+});
+
+//-----------Ajout entreprise----------
+app.post('/entreprise/ajout', (req, res) =>{
+    console.log(req.body);
+    page = 1;
 });
 
 //-------------------------ETUDIANT-------------------------//
@@ -123,7 +139,15 @@ app.post('/upload/etudiant/lettre', (res, req) =>{
 
 //-----------Récupération Candidature Entretien et Stage-----------
 
-app.post('/api/etudiant/candidature', (res, req) =>{
+app.post('/api/etudiant/candidature', (req, res) =>{
+    console.log(req.body);
+});
+
+app.post('/api/etudiant/entretien', (req, res) =>{
+    console.log(req.body);
+});
+
+app.post('/api/etudiant/stage', (req, res) =>{
     console.log(req.body);
 });
 

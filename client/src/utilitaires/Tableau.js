@@ -39,11 +39,20 @@ class Tableau extends Component{
             for(let i=0; i<this.nbCol; i++){
                 if(this.nomColonne[i] == "CV" || this.nomColonne[i] == "Lettre" || this.nomColonne[i] == "Document"){
                     console.log("passage");
-                    infos += "<td style=\"text-align: center\"/> <img src=\"/img/eye-2387853_960_720.webp\" alt=\"bouton voir\" width=\"30\" height=\"30\">";
+                    infos += "<td style=\"text-align: center\"/>\
+                    <button className=\"transparent\" id=\"modifier\" type=\"button\">\
+                        <img id=\"vue\" src=\"/img/eye-2387853_960_720.webp\" alt=\"bouton voir\" width=\"30\" height=\"30\">\
+                    </button>";
                 }else if(this.nomColonne[i] == "Traiter" || this.nomColonne[i] == "Modifier"){
-                    infos += "<td style=\"text-align: center\"/> <img src=\"/img/crayon_376363.png\" alt=\"bouton modifier\" width=\"20\" height=\"20\">";
+                    infos += "<td style=\"text-align: center\"/>\
+                    <button className=\"transparent\" id=\"modifier\" type=\"button\">\
+                        <img src=\"/img/crayon_376363.png\" alt=\"bouton modifier\" width=\"20\" height=\"20\">\
+                    </button>";
                 }else if(this.nomColonne[i] == "Supprimer"){
-                    infos += "<td style=\"text-align: center\"/> <img src=\"/img/csm_Accroche_dechets_menagers_28360027d4.png\" alt=\"bouton modifier\" width=\"20\" height=\"20\">";
+                    infos += "<td style=\"text-align: center\"/> \
+                        <button className=\"transparent\" id=\"jeter\" type=\"button\">\
+                            <img src=\"/img/csm_Accroche_dechets_menagers_28360027d4.png\" alt=\"bouton modifier\" width=\"20\" height=\"20\">\
+                        </button>";
                 }else{
                    infos += "<td>" + this.state.contenu[j][this.nomColonne[i]] +" </td>" ;
                 }

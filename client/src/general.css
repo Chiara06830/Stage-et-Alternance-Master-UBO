@@ -107,3 +107,8 @@ tr:nth-child(even) {
 .deconnexion :hover{
     background-color: aliceblue;
 }
+
+.transparent{
+    background: none;
+    border: none;
+}

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import UsePopup from '../../../utilitaires/PopUp';
+import PopAjoutEntreprise from '../../popAjoutEntreprise';
 
 class PopAjoutStage extends Component{
     render(){
@@ -7,7 +8,7 @@ class PopAjoutStage extends Component{
             <form action="http://localhost:7146/api/etudiant/stage" method="POST">
                 <p>Entreprise</p>
                 <input type="text" name="entreprise"/>
-                <a href="google.com">Si l'entreprise n'existe pas, ajouter l'entreprise</a>
+                <PopAjoutEntreprise class="lien" bouton="Ajouter une entreprise"/>
                 <p>Type de contrat</p>
                 <select name="contrat">
                     <option>Option 1</option>

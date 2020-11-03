@@ -2,16 +2,38 @@ import React, {Component} from 'react';
 import UsePopup from '../../../utilitaires/PopUp';
 
 class PopAjoutEntretien extends Component {
-    //------------- Fonction utilitaires -------------//
+    constructor(props){
+        super(props);
+        this.nbIntervenant = 0;
+    }
 
+    //------------- Fonction utilitaires -------------//
     ajoutIntervenant(){
-        const inter = 
-        <form>
-            <input type="text" placeholder="Nom de l'intervenant" value={this.state.nomIntervenant} onChange={(event) => this.sauvNomIntervenant(event)}/>
-            <input type="text" placeholder="Prénom de l'intervenant" value={this.state.prenomIntervenant} onChange={(event) => this.sauvPrenomIntervenant(event)}/>
-            <input type="text" placeholder="Fonction de l'intervenant" value={this.state.fonctionIntervenant} onChange={(event) => this.sauvFonctionIntervenant(event)}/>
-            <input type="text" placeholder="Entreprise" value={this.state.entrepriseIntervenant} onChange={(event) => this.sauvEntrepriseIntervenant(event)}/>
-        </form>
+        this.nbIntervenant ++;
+        this.afficherIntervenant();
+    }
+
+    suppIntervenant(){
+        if(this.nbIntervenant>0){
+            this.nbIntervenant--;
+            this.afficherIntervenant();
+        }
+    }
+
+    afficherIntervenant(){
+        let inter = "";
+
+        for(let i=0; i<this.nbIntervenant; i++){
+            inter +=
+            "<div>\
+                <p>Intervenant n° " + (i+1)  + " :</p>\
+                <input type=\"text\" placeholder=\"Nom de l'intervenant\" name=\"nom_intervenant_" + i + "\"/>\
+                <input type=\"text\" placeholder=\"Prénom de l'intervenant\" name=\"prenom_intervenant_" + i + "\"/>\
+                <input type=\"text\" placeholder=\"Fonction de l'intervenant\" name=\"fonction_intervenant_" + i + "\"/>\
+                <input type=\"text\" placeholder=\"Entreprise\" name=\"entreprise_intervenant_" + i + "\"/>\
+            </div>";
+        }
+        document.getElementById("intervenant").innerHTML = inter;
     }
 
     //------------- Rendu -------------//
@@ -26,7 +48,8 @@ class PopAjoutEntretien extends Component {
                     <input type="radio" id="avec" name="candidature"/> <label htmlFor="avec">avec candidature</label> <br/>
                     <input type="radio" id="sans" name="candidature"/> <label htmlFor="avec">sans candidature</label>
                 </p> 
-                <button type="button" onClick={() => this.ajoutIntervenant()}>Ajouter un intervenant</button><br/>
+                <button type="button" onClick={() => this.ajoutIntervenant()}>Ajouter un intervenant</button>
+                <button type="button" onClick={() => this.suppIntervenant()}>Supprimer un intervenant</button><br/>
                 <div id="intervenant"></div><br/>
                 <button type="submit">Valider</button>
             </form>

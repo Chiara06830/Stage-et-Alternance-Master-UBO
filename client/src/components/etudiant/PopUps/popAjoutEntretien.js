@@ -53,7 +53,7 @@ class PopAjoutEntretien extends Component {
                 <div id="intervenant"></div><br/>
                 <button type="submit">Valider</button>
             </form>
-        return <UsePopup text='Ajouter un entretien' contenu={contenu} class="btnPlus" bouton="+"/>
+        return <UsePopup text='Ajouter un entretien' contenu={contenu} class={this.props.class} bouton={this.props.bouton}/>
     }
 }
 

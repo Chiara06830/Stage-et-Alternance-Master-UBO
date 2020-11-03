@@ -37,30 +37,36 @@ class Tableau extends Component{
         for(let j=0; j<Object.keys(this.state.contenu).length; j++){
             infos+="<tr>";
             for(let i=0; i<this.nbCol; i++){
-                if(this.nomColonne[i] == "CV" || this.nomColonne[i] == "Lettre" || this.nomColonne[i] == "Document"){
-                    console.log("passage");
+                if(this.nomColonne[i] === "CV" || this.nomColonne[i] === "Lettre" || this.nomColonne[i] === "Document"){
                     infos += "<td style=\"text-align: center\"/>\
-                    <button className=\"transparent\" id=\"modifier\" type=\"button\">\
+                    <a target=\"_blank\" className=\"transparent\" class=\"voir\" href=\"" + this.state.contenu["" + j][this.nomColonne[i]] + "\">\
                         <img id=\"vue\" src=\"/img/eye-2387853_960_720.webp\" alt=\"bouton voir\" width=\"30\" height=\"30\">\
-                    </button>";
-                }else if(this.nomColonne[i] == "Traiter" || this.nomColonne[i] == "Modifier"){
-                    infos += "<td style=\"text-align: center\"/>\
-                    <button className=\"transparent\" id=\"modifier\" type=\"button\">\
-                        <img src=\"/img/crayon_376363.png\" alt=\"bouton modifier\" width=\"20\" height=\"20\">\
-                    </button>";
-                }else if(this.nomColonne[i] == "Supprimer"){
+                    </a>";
+                }else if(this.nomColonne[i] === "Traiter" || this.nomColonne[i] === "Modifier"){
+                    infos += "<td style=\"text-align: center\"/>" + this.props.pop;
+                }else if(this.nomColonne[i] === "Supprimer"){
                     infos += "<td style=\"text-align: center\"/> \
-                        <button className=\"transparent\" id=\"jeter\" type=\"button\">\
+                        <button className=\"transparent\" class=\"jeter\" type=\"button\">\
                             <img src=\"/img/csm_Accroche_dechets_menagers_28360027d4.png\" alt=\"bouton modifier\" width=\"20\" height=\"20\">\
                         </button>";
                 }else{
-                   infos += "<td>" + this.state.contenu[j][this.nomColonne[i]] +" </td>" ;
+                    infos += "<td>" + this.state.contenu[j][this.nomColonne[i]] +" </td>" ;
                 }
             }
             infos+="</tr>";
         }
         
         return <tbody dangerouslySetInnerHTML={{ __html: infos }}/>;
+    }
+
+    //attribuer une fonction de suppression au btn poubelle
+    attribJeter(){
+        const btn = document.getElementsByClassName("jeter");
+        for(let i=0; i<btn.length; i++){
+            btn[i].onclick = () =>{
+                console.log("Supression");
+            }
+        }
     }
 
     //-----------Créer l'entête de la table-----------
@@ -83,6 +89,7 @@ class Tableau extends Component{
                     {this.createTable(this.props.chemin, this.props.nbColonne, this.props.nomColonne)}
                 </thead>
                     {this.createRows()}
+                    {this.attribJeter()}
             </table>
         );
     }

@@ -32,7 +32,7 @@ class Inscription extends Component{
         
         let maj = false;
         for(let i=0; i<password.length; i++){
-            if(password.charAt(i).toUpperCase() == password.charAt(i)){
+            if(password.charAt(i).toUpperCase() === password.charAt(i)){
                 maj = true;
             }
         }

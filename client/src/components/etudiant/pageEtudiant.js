@@ -24,7 +24,7 @@ class Etudiant extends Component {
     }
     
     render(){
-        if(this.state.page == 1){
+        if(this.state.page === 1){
             return(
                 <div>
                     <Info />

@@ -21,7 +21,7 @@ class PopAjoutCandidature extends Component {
                     </p><br/>
                     <button type="submit">Valider</button>
                 </form>
-        return <UsePopup text='Créer une candidature' contenu={contenu} class="btnPlus" bouton="+"/>
+        return <UsePopup text='Créer une candidature' contenu={contenu} class={this.props.class} bouton={this.props.bouton}/>
     }
 }
 

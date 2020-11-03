@@ -19,7 +19,7 @@ class PopAjoutStage extends Component{
                 <button type="submit">Valider</button>
             </form>
         return (
-            <UsePopup text="Déclarer mon stage" contenu={contenu} class="btnPlus" bouton="+"/>
+            <UsePopup text="Déclarer mon stage" contenu={contenu} class={this.props.class} bouton={this.props.bouton}/>
         );
     }
 }

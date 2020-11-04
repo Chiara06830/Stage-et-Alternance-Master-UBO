@@ -94,6 +94,7 @@ tr:nth-child(even) {
 .deconnexion{
     background-color: white;
     float: right;
+    margin-top: 5px;
     padding: 5px;
     border-radius: 15px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -104,7 +105,7 @@ tr:nth-child(even) {
     border: none;
 }
 
-.deconnexion :hover{
+.deconnexion button :hover{
     background-color: aliceblue;
 }
 

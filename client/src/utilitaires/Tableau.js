@@ -5,9 +5,6 @@ import "../components/etudiant/etudiant.css";
 class Tableau extends Component{
     constructor(props){
         super(props);
-        this.nbCol = 0;
-        this.chemin = "";
-        this.nomColonne = [];
         this.state = {
             contenu : []
         }
@@ -19,7 +16,7 @@ class Tableau extends Component{
     }
 
     fetchContenu(){
-        fetch(this.chemin)
+        fetch(this.props.chemin)
             .then(response => response.json())
             .then(data =>{
                 this.setState({
@@ -36,21 +33,29 @@ class Tableau extends Component{
         let infos = "";
         for(let j=0; j<Object.keys(this.state.contenu).length; j++){
             infos+="<tr>";
-            for(let i=0; i<this.nbCol; i++){
-                if(this.nomColonne[i] === "CV" || this.nomColonne[i] === "Lettre" || this.nomColonne[i] === "Document"){
+            for(let i=0; i<this.props.nbColonne; i++){
+                if(this.props.nomColonne[i] === "CV" || this.props.nomColonne[i] === "Lettre" || this.props.nomColonne[i] === "Document"){
+                    //envoie sur le lien du pdf
                     infos += "<td style=\"text-align: center\"/>\
-                    <a target=\"_blank\" className=\"transparent\" class=\"voir\" href=\"" + this.state.contenu["" + j][this.nomColonne[i]] + "\">\
+                    <a target=\"_blank\" className=\"transparent\" class=\"voir\" href=\"" + this.state.contenu["" + j][this.props.nomColonne[i]] + "\">\
                         <img id=\"vue\" src=\"/img/eye-2387853_960_720.webp\" alt=\"bouton voir\" width=\"30\" height=\"30\">\
                     </a>";
-                }else if(this.nomColonne[i] === "Traiter" || this.nomColonne[i] === "Modifier"){
-                    infos += "<td style=\"text-align: center\"/>" + this.props.pop;
-                }else if(this.nomColonne[i] === "Supprimer"){
+                }else if(this.props.nomColonne[i] === "Traiter" || this.props.nomColonne[i] === "Modifier"){
+                    //ouvre la popup du tableau
+                    infos += "<td style=\"text-align: center\"/>\
+                        <div class=\"modifier\"></div>";
+                }else if(this.props.nomColonne[i] === "Supprimer"){
+                    //bouton qui envoie l'id de la ligne au back end pour ensuite la supprimer de la BDD
                     infos += "<td style=\"text-align: center\"/> \
-                        <button className=\"transparent\" class=\"jeter\" type=\"button\">\
-                            <img src=\"/img/csm_Accroche_dechets_menagers_28360027d4.png\" alt=\"bouton modifier\" width=\"20\" height=\"20\">\
-                        </button>";
+                        <form action=\"" + this.props.post + "\" method=\"POST\">\
+                            <button style=\"background: none; border: none;\" class=\"jeter\" type=\"submit\">\
+                                <input style=\"visibility: hidden; width:0; height:0\" name=\"id\" value=\"" + this.state.contenu[j]["id"] + "\"/>\
+                                <img src=\"/img/csm_Accroche_dechets_menagers_28360027d4.png\" alt=\"bouton modifier\" width=\"20\" height=\"20\">\
+                            </button>\
+                        </form>";
                 }else{
-                    infos += "<td>" + this.state.contenu[j][this.nomColonne[i]] +" </td>" ;
+                    //remplie la case avec l'info de contenu
+                    infos += "<td>" + this.state.contenu[j][this.props.nomColonne[i]] +" </td>" ;
                 }
             }
             infos+="</tr>";
@@ -59,24 +64,19 @@ class Tableau extends Component{
         return <tbody dangerouslySetInnerHTML={{ __html: infos }}/>;
     }
 
-    //attribuer une fonction de suppression au btn poubelle
-    attribJeter(){
-        const btn = document.getElementsByClassName("jeter");
-        for(let i=0; i<btn.length; i++){
-            btn[i].onclick = () =>{
-                console.log("Supression");
-            }
+    ajoutPopModif(){
+        const cases = document.getElementsByClassName("modifier");
+        for(let i=0; i<cases.length; i++){
+            cases[i].innerHTML = "<p>pooooo</p>";
         }
+        console.log(cases);
     }
 
     //-----------Créer l'entête de la table-----------
-    createTable(chemin, nbColonne, tab){
+    createTable(){
         let col = "";
-        this.nbCol = nbColonne;
-        this.chemin = chemin;
-        this.nomColonne = tab;
-        for(let i=0; i<nbColonne; i++){
-            let nom = tab[i];
+        for(let i=0; i<this.props.nbColonne; i++){
+            let nom = this.props.nomColonne[i];
             col += "<th>" + nom + "</th>";
         }
         return <tr className="titre" dangerouslySetInnerHTML={{ __html: col }}/>;
@@ -86,10 +86,10 @@ class Tableau extends Component{
         return(
             <table>
                 <thead>
-                    {this.createTable(this.props.chemin, this.props.nbColonne, this.props.nomColonne)}
+                    {this.createTable()}
                 </thead>
                     {this.createRows()}
-                    {this.attribJeter()}
+                    {this.ajoutPopModif()}
             </table>
         );
     }

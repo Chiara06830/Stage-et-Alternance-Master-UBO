@@ -104,6 +104,7 @@ app.get('/api/etudiant/info', (req, res) => {
 
 //-----------Récupération CV et Lettre-----------
 app.post('/upload/etudiant/cv', (res, req) =>{
+    console.log(req.body);
     if(req.files === null){ //si on essaie de récuperer rien du tout
         return res.statusCode(400).json({msg : 'Auncun fihcier chargé'});
     }
@@ -155,7 +156,7 @@ app.post('/api/etudiant/stage', (req, res) =>{
 
 app.get('/api/tableau/cv', (req, res) => {
     const contenu ={
-        0:{"Date de dépôt" : "prout", "CV" : "woop", "Date consultation": "pilou", "Enseignant consultant" : "pata", "Commentaire" : "pouet"}
+        0:{"id" : 12, "Date de dépôt" : "prout", "CV" : "woop", "Date consultation": "pilou", "Enseignant consultant" : "pata", "Commentaire" : "pouet"}
     };
 
     res = res.json(contenu);
@@ -181,8 +182,8 @@ app.get('/api/tableau/entretien', (req, res) => {
 
 app.get('/api/tableau/stage', (req, res) => {
     const contenu ={
-        0:{"Entreprise":"prout", "Type de contrat":"pouet", "Posibilité d'alternance": "woop"},
-        1:{"Entreprise":"prout", "Type de contrat":"pouet", "Posibilité d'alternance": "woop"}
+        0:{"id" : 46, "Entreprise":"prout", "Type de contrat":"pouet", "Posibilité d'alternance": "woop"},
+        1:{"id" : 25, "Entreprise":"prout", "Type de contrat":"pouet", "Posibilité d'alternance": "woop"}
     };
 
     res = res.json(contenu);

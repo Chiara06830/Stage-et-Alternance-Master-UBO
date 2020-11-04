@@ -110,12 +110,12 @@ class Inscription extends Component{
                         </div>
                         <input type="checkbox" id="infoMail" name="infoMail"/> <label htmlFor="infoMail">J'autorise l'application à m'informer par mail</label> <br/>
                         <input type="checkbox" id="exact" name="exact"/> <label htmlFor="exact">Je certifie sur l'honneur l'exactitude des renseignements fournis *</label><br/>
-            <button type="submit" onClick={() => this.handleSubmit()}>{this.props.validation}</button>
+                        <button type="submit" onClick={() => this.handleSubmit()}>{this.props.validation}</button>
                     </form>
 
                     <p>Les champs * sont obligatoire</p>
                     <form action={this.props.chemin} method="POST">
-            <button className="lien" type="submit" onClick={() => this.handleSubmit()}>{this.props.retour}</button>
+                        <button className="lien" type="submit" onClick={() => this.handleSubmit()}>{this.props.retour}</button>
                     </form>
                     
                 </div>

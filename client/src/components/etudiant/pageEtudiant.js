@@ -28,14 +28,13 @@ class Etudiant extends Component {
             return(
                 <div>
                     <Info />
+                    <TableauBord />
                     <form className="deconnexion" action="http://localhost:7146/retourLogin" method="POST">
                         <label>Se déconnecter : </label>
                         <button type="submit" onClick={() => this.deconnecter()}>
                             <img src="/img/deco.png" alt="bouton modifier" width="20" height="20"/>
                         </button>
                     </form>
-                    <TableauBord />
-                    
                 </div>
             );
         }else{

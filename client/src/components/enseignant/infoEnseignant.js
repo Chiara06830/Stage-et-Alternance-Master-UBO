@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PopAjoutEntreprise from '../popAjoutEntreprise';
 import "../../general.css";
 import "../etudiant/etudiant.css";
 
@@ -67,14 +68,16 @@ class GestionEntreprise extends Component{
                     S'il l'approuve pas il a le droit de la supprimer du système. 
                     Dans ce cas toutes vos candiatures, vos entretiens et vos stage en lien avec cette entreprise seront supprimé.
                 </p>
-                <button className="btnInfo" type="button">Ajouter une entreprise</button>
+                <PopAjoutEntreprise class="btnInfo" bouton="Ajouter une entreprise"/>
 
                 <p>
                     Les étudiants peuvent rajouter des entreprises quand elle ne sont pas déjà dans le système.
                     Vous pouvez consulter la liste des entreprises et éventuellement retirer les entreprises si elles ne correspondent pas à vos critères.
                     Dans ce cas les candiatures, entretiens et stage des élèves en lien avec cette entreprise seront supprimés.
                 </p>
-                <button className="btnInfo" type="button">Consulter la liste des entreprises</button>
+                <form action="http://localhost:7146/entreprise/liste" method="POST">
+                    <button className="btnInfo" type="submit">Consulter la liste des entreprises</button>
+                </form>
             </div>
         );
     }
@@ -85,7 +88,9 @@ class GestionUser extends Component{
         const commun = <div>
                 <h2>Gestion des utilisateurs</h2>
                 <p>Vous pouvez ajouter des comptes étudiants.</p>
-                <button className="btnInfo" type="button">Ajouter un étudiant</button>
+                <form action="http://localhost:7146/inscription/exetrieur" method="POST">
+                    <button className="btnInfo" type="submit">Ajouter un étudiant</button>
+                </form>
             </div>
         if(!this.props.admin){
             return(commun);

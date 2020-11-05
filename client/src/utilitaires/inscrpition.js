@@ -117,7 +117,6 @@ class Inscription extends Component{
                     <form action={this.props.chemin} method="POST">
                         <button className="lien" type="submit" onClick={() => this.handleSubmit()}>{this.props.retour}</button>
                     </form>
-                    
                 </div>
             );
         }else{

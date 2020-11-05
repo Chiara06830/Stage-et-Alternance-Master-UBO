@@ -5,6 +5,7 @@ import Etudiant from"./components/etudiant/pageEtudiant";
 import Enseignant from './components/enseignant/pageEnseignant';
 import Inscription from './utilitaires/inscrpition';
 import Admin from './components/admin/pageAdmin';
+import ListeEntreprise from './components/listeEntreprise';
 
 class Connexion extends Component {
     constructor(props){
@@ -36,7 +37,7 @@ class Connexion extends Component {
                     <h1>Connexion</h1>
                     <form action="http://localhost:7146/login" method="POST" >
                         <input type="text" placeholder="Adresse mail" name="email"/><br/>
-                        <input type="text" placeholder="Mot de passe" name="password"/><br/>
+                        <input type="password" placeholder="Mot de passe" name="password"/><br/>
                         <button type="submit" onClick={this.handleSubmit()}>Se connecter</button><br/>
                     </form>
                     <a href="google.com">Mot de passe oublié</a><br/>
@@ -73,10 +74,24 @@ class Connexion extends Component {
                 <Inscription 
                     titre="Modification des informations personelles"
                     chemin="http://localhost:7146/retourEtudiant"
-                    envoie="http://localhost:7146/entreprise/ajout"
+                    envoie="http://localhost:7146/inscrption/modif/etuidant"
                     validation="Modifier"
                     retour="Retour"
                 />
+            );
+        }else if(this.state.charger === 6){
+            return(
+                <Inscription 
+                    titre="Modification des informations personelles"
+                    chemin="http://localhost:7146/retourEnseignant"
+                    envoie="http://localhost:7146/inscrption/ajout/exterieur"
+                    validation="Modifier"
+                    retour="Retour"
+                />
+            );
+        }else if(this.state.charger === 7){
+            return (
+                <ListeEntreprise />
             );
         }
     }

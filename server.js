@@ -36,38 +36,66 @@ app.post('/login', (req, res) => {
     }else if(req.body.email.match("admin")){
         page = 4;
     }
+
+    /*let columns = [req.email, req.password];
+    let query ='SELECT UTILISATEUR.id_utilisateur\
+                FROM UTILISATEUR \
+                WHERE UTILISATEUR.email = ?? AND UTILISATEUR.mot_de_passe = ??';
+
+
+    connection.query(query, [columns], function (error, results, fields) {
+        if (error) throw error;
+        console.log('le resultat de la requête est : ', results);
+        res = res.json(etudiant);
+    });*/
+
 });
 
 app.get('/login', (req, res) =>{
     res = res.json({"page" : page});
 });
 
-app.post('/retourLogin', (req, res) =>{
-    page = 0;
-});
-
-app.post('/retourEtudiant', (req, res) =>{
-    page = 1;
-});
+app.post('/retourLogin', (req, res) =>{page = 0;});
+app.post('/retourEtudiant', (req, res) =>{page = 1;});
+app.post('/retourEnseignant', (req, res) =>{page = 2;});
+app.post('/retourAdmin', (req, res) =>{page = 4;});
 
 //-----------Inscription-----------
-app.post('/inscription', (req, res) => {
-    page = 3;
-});
-
-app.post('/inscription/modif', (req, res) => {
-    page = 5;
-});
+app.post('/inscription', (req, res) => {page = 3;});
+app.post('/inscription/modif', (req, res) => {page = 5;});
+app.post('/inscription/exetrieur', (req, res) => {page = 6;});
+app.post('/entreprise/liste', (req, res) => {page = 7;});
 
 app.post('/inscription/creation', (req, res) => {
     console.log(req.body);
     page = 0;
 });
 
+app.post('/inscrption/ajout/exterieur', (req, res) => {
+    console.log(req.body);
+    page = 2;
+});
+
+app.post('inscrption/modif/etuidant', (req, res) => {
+    console.log(req.body);
+    page = 1;
+});
+
 //-----------Ajout entreprise----------
 app.post('/entreprise/ajout', (req, res) =>{
     console.log(req.body);
-    page = 1;
+});
+
+app.get('/entreprise/liste', (req, res) => {
+    const contenu ={
+        0:{"id" : 123, "Nom" : "Capgemini", "Site web" : "https://www.capgemini.com/", "Adresse": "Nantes"}
+    };
+
+    res = res.json(contenu);
+});
+
+app.post('/api/entretien/liste', (req, res) => {
+    console.log(req.body);
 });
 
 //-------------------------ETUDIANT-------------------------//

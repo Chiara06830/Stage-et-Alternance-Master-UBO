@@ -4,35 +4,17 @@ import Info from "./infoEnseignant";
 import TableauBord from "./boardEnseignant";
 
 class Enseignant extends Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            page : 1
-        }
-    }
-    
-    deconnecter(){
-        fetch('http://localhost:7146/login')
-            .then(response => response.json())
-            .then(data =>{
-                this.setState({
-                    page: data['page']
-                });
-            })
-            .catch(error => this.setState({ error}));
-    }
-
     render(){
         return(
             <div>
-                <Info admin={false}/>
-                <TableauBord admin={false}/>
-                <form className="deconnexion" action="http://localhost:7146/retourLogin" method="POST">
-                    <label>Se déconnecter : </label>
-                    <button type="submit" onClick={() => this.deconnecter()}>
+                <Info admin={false} chargerEtat={this.props.chargerEtat}/>
+                <TableauBord admin={false} chargerEtat={this.props.chargerEtat}/>
+                <div className="deconnexion">
+                <label>Se déconnecter : </label>
+                    <button type="submit" onClick={() => this.props.chargerEtat(0)}>
                         <img src="/img/deco.png" alt="bouton modifier" width="20" height="20"/>
                     </button>
-                </form>
+                </div>
             </div>
         );
     }

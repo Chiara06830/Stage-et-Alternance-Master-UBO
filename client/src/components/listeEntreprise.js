@@ -6,11 +6,9 @@ export default class ListeEntreprise extends Component{
         return(
             <div className="element">
                 <h2 className="align">Liste des entreprises</h2>
-                <form action="http://localhost:7146/retourEnseignant" method="POST">
-                    <button className="transparent droite" type="submit">
+                <button className="transparent droite" type="button" onClick={() => this.props.chargerEtat(2)}>
                     <img src="/img/689672_arrows_512x512.png" alt="bouton modifier" width="20" height="20"/>
-                    </button>
-                </form>
+                </button>
                 <Tableau 
                     chemin="http://localhost:7146/entreprise/liste"
                     nbColonne={4}

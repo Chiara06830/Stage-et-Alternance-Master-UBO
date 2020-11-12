@@ -6,8 +6,9 @@ import Enseignant from './components/enseignant/pageEnseignant';
 import Inscription from './utilitaires/inscrpition';
 import Admin from './components/admin/pageAdmin';
 import ListeEntreprise from './components/listeEntreprise';
+import Connexion from './connexion';
 
-class Connexion extends Component {
+class Gestion extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -15,83 +16,65 @@ class Connexion extends Component {
         }
     }
 
-    componentDidMount(){
-        this.handleSubmit();
-    }
-
-    handleSubmit() {
-        fetch('http://localhost:7146/login')
-            .then(response => response.json())
-            .then(data =>{
-                this.setState({
-                    charger: data['page']
-                });
-            })
-            .catch(error => this.setState({ error}));
+    chargerEtat = (valeur) => {
+        this.setState({
+            charger : valeur
+        });
     }
 
     render() {
         if(this.state.charger === 0){
             return (
-                <div className="connexion">
-                    <h1>Connexion</h1>
-                    <form action="http://localhost:7146/login" method="POST" >
-                        <input type="text" placeholder="Adresse mail" name="email"/><br/>
-                        <input type="password" placeholder="Mot de passe" name="password"/><br/>
-                        <button type="submit" onClick={this.handleSubmit()}>Se connecter</button><br/>
-                    </form>
-                    <a href="google.com">Mot de passe oublié</a><br/>
-                    <p>Vous n'êtes pas encore inscrit ?</p>
-                    <form action="http://localhost:7146/inscription" method="POST" >
-                        <button className="lien" type="submit">S'inscrire</button>
-                    </form>
-                </div>
-            );
+                <Connexion chargerEtat={this.chargerEtat}/>
+            )
         }else if(this.state.charger === 1){
             return(
-                <Etudiant />
+                <Etudiant chargerEtat={this.chargerEtat}/>
             );
         }else if(this.state.charger === 2){
             return(
-                <Enseignant />
+                <Enseignant chargerEtat={this.chargerEtat}/>
             );
         }else if(this.state.charger === 3){
             return(
                 <Inscription 
                     titre="Inscription"
-                    chemin="http://localhost:7146/retourLogin"
+                    chemin={0}
                     envoie="http://localhost:7146/inscription/creation"
                     validation="Créer le compte"
                     retour="Se connecter"
+                    chargerEtat={this.chargerEtat}
                 />
             );
         }else if(this.state.charger === 4){
             return(
-                <Admin />
+                <Admin chargerEtat={this.chargerEtat}/>
             );
         }else if(this.state.charger === 5){
             return(
                 <Inscription 
                     titre="Modification des informations personelles"
-                    chemin="http://localhost:7146/retourEtudiant"
+                    chemin={1}
                     envoie="http://localhost:7146/inscrption/modif/etuidant"
                     validation="Modifier"
                     retour="Retour"
+                    chargerEtat={this.chargerEtat}
                 />
             );
         }else if(this.state.charger === 6){
             return(
                 <Inscription 
                     titre="Modification des informations personelles"
-                    chemin="http://localhost:7146/retourEnseignant"
+                    chemin={2}
                     envoie="http://localhost:7146/inscrption/ajout/exterieur"
                     validation="Modifier"
                     retour="Retour"
+                    chargerEtat={this.chargerEtat}
                 />
             );
         }else if(this.state.charger === 7){
             return (
-                <ListeEntreprise />
+                <ListeEntreprise chargerEtat={this.chargerEtat}/>
             );
         }
     }
@@ -100,6 +83,6 @@ class Connexion extends Component {
 export default Connexion;
 
 ReactDOM.render(
-    <Connexion />,
+    <Gestion />,
     document.getElementById('root')
 );

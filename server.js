@@ -23,20 +23,13 @@ app.use(bodyParser.json());
 //-------------------------GENERAl-------------------------//
 
 //-----------Identification-----------
-let page = 0; //0: connexion, 1: etudiant, 2:enseignant, 3: inscrption, 4:admin, 5:modif inscrtion
 let idUser = -1;
 app.post('/login', (req, res) => {
     //******TO DO****** 
     //<Attribuer idUser>
-    
-    if(req.body.email.match(/^.*@etudiant.univ-brest.fr$/)){
-        page = 1;
-    }else if(req.body.email.match(/^.*@univ-brest.fr$/)){
-        page = 2;
-    }else if(req.body.email.match("admin")){
-        page = 4;
-    }
 
+    console.log(req.body);
+    
     /*let columns = [req.email, req.password];
     let query ='SELECT UTILISATEUR.id_utilisateur\
                 FROM UTILISATEUR \
@@ -51,34 +44,18 @@ app.post('/login', (req, res) => {
 
 });
 
-app.get('/login', (req, res) =>{
-    res = res.json({"page" : page});
-});
-
-app.post('/retourLogin', (req, res) =>{page = 0;});
-app.post('/retourEtudiant', (req, res) =>{page = 1;});
-app.post('/retourEnseignant', (req, res) =>{page = 2;});
-app.post('/retourAdmin', (req, res) =>{page = 4;});
-
 //-----------Inscription-----------
-app.post('/inscription', (req, res) => {page = 3;});
-app.post('/inscription/modif', (req, res) => {page = 5;});
-app.post('/inscription/exetrieur', (req, res) => {page = 6;});
-app.post('/entreprise/liste', (req, res) => {page = 7;});
 
 app.post('/inscription/creation', (req, res) => {
     console.log(req.body);
-    page = 0;
 });
 
 app.post('/inscrption/ajout/exterieur', (req, res) => {
     console.log(req.body);
-    page = 2;
 });
 
 app.post('inscrption/modif/etuidant', (req, res) => {
     console.log(req.body);
-    page = 1;
 });
 
 //-----------Ajout entreprise----------

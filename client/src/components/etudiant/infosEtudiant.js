@@ -65,9 +65,7 @@ class InfoPerso extends Component {
                         {this.state.nationalite}<br />
                         {this.state.alternance}</p>
                 </div><br />
-                <form action="http://localhost:7146/inscription/modif" method="POST">
-                    <button className="btnInfo" type="submit" >Modifier</button>
-                </form>
+                <button className="btnInfo" type="button" onClick={() => this.props.chargerEtat(5)}>Modifier</button>
             </div>
         );
     }
@@ -91,15 +89,13 @@ class GestionEntreprise extends Component{
     }
 }
 
-class Info extends Component{
+export default class Info extends Component{
     render(){
         return (
             <div id="partieGauche">
-                <InfoPerso />
-                <GestionEntreprise />
+                <InfoPerso chargerEtat={this.props.chargerEtat}/>
+                <GestionEntreprise chargerEtat={this.props.chargerEtat}/>
             </div>
         );
     }
 }
-
-export default Info;

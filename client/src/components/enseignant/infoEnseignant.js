@@ -75,9 +75,7 @@ class GestionEntreprise extends Component{
                     Vous pouvez consulter la liste des entreprises et éventuellement retirer les entreprises si elles ne correspondent pas à vos critères.
                     Dans ce cas les candiatures, entretiens et stage des élèves en lien avec cette entreprise seront supprimés.
                 </p>
-                <form action="http://localhost:7146/entreprise/liste" method="POST">
-                    <button className="btnInfo" type="submit">Consulter la liste des entreprises</button>
-                </form>
+                <button className="btnInfo" type="button" onClick={() => this.props.chargerEtat(7)}>Consulter la liste des entreprises</button>
             </div>
         );
     }
@@ -88,9 +86,7 @@ class GestionUser extends Component{
         const commun = <div>
                 <h2>Gestion des utilisateurs</h2>
                 <p>Vous pouvez ajouter des comptes étudiants.</p>
-                <form action="http://localhost:7146/inscription/exetrieur" method="POST">
-                    <button className="btnInfo" type="submit">Ajouter un étudiant</button>
-                </form>
+                <button className="btnInfo" type="button" onClick={() => this.props.chargerEtat(6)}>Ajouter un étudiant</button>
             </div>
         if(!this.props.admin){
             return(commun);
@@ -105,16 +101,14 @@ class GestionUser extends Component{
     }
 }
 
-class Info extends Component{
+export default class Info extends Component{
     render(){
         return (
             <div id="partieGauche">
-                <InfoPerso />
-                <GestionEntreprise />
-                <GestionUser admin={this.props.admin}/>
+                <InfoPerso chargerEtat={this.props.chargerEtat}/>
+                <GestionEntreprise chargerEtat={this.props.chargerEtat}/>
+                <GestionUser admin={this.props.admin} chargerEtat={this.props.chargerEtat}/>
             </div>
         );
     }
 }
-
-export default Info;

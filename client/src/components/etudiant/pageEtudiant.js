@@ -3,44 +3,21 @@ import Info from "./infosEtudiant";
 import TableauBord from "./boardEtudiant";
 import "../../general.css";
 import "./etudiant.css";
-import Connexion from "../../index";
 
-class Etudiant extends Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            page : 1
-        }
-    }
-    deconnecter(){
-        fetch('http://localhost:7146/login')
-            .then(response => response.json())
-            .then(data =>{
-                this.setState({
-                    page: data['page']
-                });
-            })
-            .catch(error => this.setState({ error}));
-    }
+export default class Etudiant extends Component {
     
     render(){
-        if(this.state.page === 1){
-            return(
-                <div>
-                    <Info />
-                    <TableauBord />
-                    <form className="deconnexion" action="http://localhost:7146/retourLogin" method="POST">
-                        <label>Se déconnecter : </label>
-                        <button type="submit" onClick={() => this.deconnecter()}>
-                            <img src="/img/deco.png" alt="bouton modifier" width="20" height="20"/>
-                        </button>
-                    </form>
+        return(
+            <div >
+                <Info chargerEtat={this.props.chargerEtat}/>
+                <TableauBord chargerEtat={this.props.chargerEtat}/>
+                <div className="deconnexion">
+                <label>Se déconnecter : </label>
+                    <button type="submit" onClick={() => this.props.chargerEtat(0)}>
+                        <img src="/img/deco.png" alt="bouton modifier" width="20" height="20"/>
+                    </button>
                 </div>
-            );
-        }else{
-            return(<Connexion />);
-        }
+            </div>
+        );
     }
 }
-
-export default Etudiant;

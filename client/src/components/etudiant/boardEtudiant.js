@@ -20,14 +20,16 @@ class Documents extends Component{
                     chemin = 'http://localhost:7146/api/tableau/cv'
                     nbColonne = {7} 
                     nomColonne = {["Date de dépôt", "CV", "Date consultation", "Enseignant consultant", "Commentaire", "Modifier", "Supprimer"]} 
-                    post="http://localhost:7146/upload/etudiant/cv"/>
+                    post="http://localhost:7146/upload/etudiant/cv"
+                    pop={<PopAjoutCV class="btnPlus" bouton="+"/>}/>
                 <h3 className="align">Lettres de motivation</h3>
                 <PopAjoutLettre class="btnPlus" bouton="+"/>
                 <Tableau 
                     chemin = 'http://localhost:7146/api/tableau/lettre'
                     nbColonne = {9} 
                     nomColonne = {["Date de dépôt", "Entreprise", "Lettre", "Validé/A refaire", "Date de consultation", "Enseignant consultant", "Commentaire", "Modifier", "Supprimer"]}
-                    post="http://localhost:7146/upload/etudiant/lettre"/>
+                    post="http://localhost:7146/upload/etudiant/lettre"
+                    pop={<PopAjoutLettre class="btnPlus" bouton="+"/>}/>
             </div>
         );
     }
@@ -44,21 +46,23 @@ class RechercheStage extends Component {
                     chemin = 'http://localhost:7146/api/tableau/candidature'
                     nbColonne = {5} 
                     nomColonne = {["n° de candidature", "Entreprise", "Origine de l'offre", "Modifier", "Supprimer"]}
-                    post="http://localhost:7146/api/etudiant/candidature"/>
+                    post="http://localhost:7146/api/etudiant/candidature"
+                    pop={<PopAjoutCandidature class="btnPlus" bouton="+"/>}/>
                 <h3 className="align">Entretiens</h3>
                 <PopAjoutEntretien class="btnPlus" bouton="+"/>
                 <Tableau 
                     chemin = 'http://localhost:7146/api/tableau/entretien'
                     nbColonne = {6} 
                     nomColonne = {["Personel", "Entreprise", "Intervenant", "Date", "Modifier", "Supprimer"]}
-                    post="http://localhost:7146/api/etudiant/entretien"/>
+                    post="http://localhost:7146/api/etudiant/entretien"
+                    pop={<PopAjoutEntretien class="btnPlus" bouton="+"/>}/>
                 <h3 className="align">Stage</h3>
                 <PopAjoutStage class="btnPlus" bouton="+"/>
                 <Tableau 
                     chemin = 'http://localhost:7146/api/tableau/stage'
                     nbColonne = {5} 
                     nomColonne = {["Entreprise", "Type de contrat", "Posibilité d'alternance", "Modifier", "Supprimer"]}
-                    pop={<PopAjoutStage class="transparent" bouton="pouet"/>}
+                    pop={<PopAjoutStage class="transparent" bouton="+"/>}
                     post="http://localhost:7146/api/etudiant/stage"/>
             </div>
         );

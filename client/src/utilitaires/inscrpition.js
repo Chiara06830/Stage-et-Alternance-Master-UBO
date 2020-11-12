@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import Connexion from '../index';
 import "../general.css";
 
 class Saisie extends Component{
@@ -13,12 +12,10 @@ class Saisie extends Component{
     }
 }
 
-class Inscription extends Component{
+export default class Inscription extends Component{
     constructor(props){
         super(props);
         this.state = {
-            page : 3,
-
             password:'',
             passwordVerif : ''
         }
@@ -64,20 +61,8 @@ class Inscription extends Component{
             return(<label></label>);
         }
     }
-    
-    handleSubmit() {
-        fetch('http://localhost:7146/login')
-            .then(response => response.json())
-            .then(data =>{
-                this.setState({
-                    page: data['page']
-                });
-            })
-            .catch(error => this.setState({ error}));
-    }
 
     render(){
-        if(this.state.page === 3){
             return (
                 <div className="centre element">
                     <h2 >{this.props.titre}</h2>
@@ -110,22 +95,12 @@ class Inscription extends Component{
                         </div>
                         <input type="checkbox" id="infoMail" name="infoMail"/> <label htmlFor="infoMail">J'autorise l'application à m'informer par mail</label> <br/>
                         <input type="checkbox" id="exact" name="exact"/> <label htmlFor="exact">Je certifie sur l'honneur l'exactitude des renseignements fournis *</label><br/>
-                        <button type="submit" onClick={() => this.handleSubmit()}>{this.props.validation}</button>
+                        <button type="submit" onClick={() => this.props.chargerEtat(this.props.chemin)}>{this.props.validation}</button>
                     </form>
 
                     <p>Les champs * sont obligatoire</p>
-                    <form action={this.props.chemin} method="POST">
-                        <button className="lien" type="submit" onClick={() => this.handleSubmit()}>{this.props.retour}</button>
-                    </form>
+                    <button className="lien" type="button" onClick={() => this.props.chargerEtat(this.props.chemin)}>{this.props.retour}</button>
                 </div>
-            );
-        }else{
-            return (
-                <Connexion/>
-            );
-        }
-        
+            )
     }
 }
-
-export default Inscription;

@@ -7,11 +7,11 @@ const port = 7146;
 
 const mysql = require('mysql');  
 
-let connection = mysql.createConnection({
-    host     : 'obiwan2.univ-brest.fr',
-    user     : 'zrelevach',
-    password : 'tq494ej8',
-    database : 'zil3-zrelevach'
+const connection = mysql.createConnection({
+    host     : 'localhost',
+    user     : 'root',
+    password : 'motdepasse',
+    database : 'test'
 });
 
 
@@ -41,7 +41,6 @@ app.post('/login', (req, res) => {
         console.log('le resultat de la requête est : ', results);
         res = res.json(etudiant);
     });*/
-
 });
 
 //-----------Inscription-----------
@@ -55,6 +54,10 @@ app.post('/inscrption/ajout/exterieur', (req, res) => {
 });
 
 app.post('inscrption/modif/etuidant', (req, res) => {
+    console.log(req.body);
+});
+
+app.post('inscrption/modif/enseignant', (req, res) => {
     console.log(req.body);
 });
 
@@ -195,6 +198,7 @@ app.get('/api/tableau/stage', (req, res) => {
 });
 
 //-------------------------ENSEIGNANT-------------------------//
+//-----------Récupération infos perso-----------
 app.get('/api/enseigant/info', (req, res) => {
     const enseignant = {
         adresse_mail : "laurence.duval@univ-brest.fr",
@@ -204,6 +208,8 @@ app.get('/api/enseigant/info', (req, res) => {
 
     res = res.json(enseignant);
 });
+
+//-----------Transmettre tableaux page endeignant-----------
 
 app.get('/tableau/ensseignant/cv', (req, res) => {
     const contenu ={
@@ -225,7 +231,7 @@ app.get('/tableau/ensseignant/historique', (req, res) => {
     res = res.json(contenu);
 });
 
-//-----------lancement du serveur-----------
+//----------LANCEMENT DU SERVEUR-----------//
 
 app.listen(port, () =>{
     console.log(`Server demarrer sur le port ${port}`);

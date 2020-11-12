@@ -49,7 +49,7 @@ class InfoPerso extends Component {
                         {this.state.prenom}
                     </p>
                 </div><br />
-                <button className="btnInfo" type="button" onClick={() => console.log("modifier")}>Modifier</button>
+                <button className="btnInfo" type="button" onClick={() => this.props.chargerEtat(8)}>Modifier</button>
             </div>
         );
     }

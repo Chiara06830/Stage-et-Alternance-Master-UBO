@@ -63,6 +63,39 @@ export default class Inscription extends Component{
     }
 
     render(){
+        if(this.props.enseignant){
+            return (
+                <div className="centre element">
+                    <h2 >{this.props.titre}</h2>
+                    <form action={this.props.envoie} method="POST">
+                        <div className="">
+                            <div className=" gauche perso align">
+                                <h3>Informations personelles</h3>
+                                <Saisie text="Prénom *" name="prenom"/>
+                                <Saisie text="Nom *" name="nom"/>
+                            </div>
+                            <div className="gauche">
+                                <h3>Informations de connexion</h3>
+                                <Saisie text="Identifiant (adresse mail UBO) *" name="mailUBO"/>
+                                <label>Mot de passe *</label><br/>
+                                <input type="password" value={this.state.password} onChange={(event) => this.sauvPassword(event)} name="password"/>
+                                {this.secuMotDePasse()}<br/>
+                                <p className="soustexte">Doit obligatoirement contenir 8 caractères comprenant lettres, chiffres et caractère spéciaux</p>
+                                <label>Confirmation du mot de passe *</label><br/>
+                                <input type="password" value={this.state.passwordVerif} onChange={(event) => this.sauvPassVerif(event)} name="passwordVerif"/><br/>
+                                {this.verifMotDePasse()}
+                            </div>
+                        </div>
+                        <input type="checkbox" id="infoMail" name="infoMail"/> <label htmlFor="infoMail">J'autorise l'application à m'informer par mail</label> <br/>
+                        <input type="checkbox" id="exact" name="exact"/> <label htmlFor="exact">Je certifie sur l'honneur l'exactitude des renseignements fournis *</label><br/>
+                        <button type="submit" onClick={() => this.props.chargerEtat(this.props.chemin)}>{this.props.retour}</button>
+                    </form>
+
+                    <p>Les champs * sont obligatoire</p>
+                    <button className="lien" type="button" onClick={() => this.props.chargerEtat(this.props.chemin)}>{this.props.retour}</button>
+                    </div>
+                );
+        }else{
             return (
                 <div className="centre element">
                     <h2 >{this.props.titre}</h2>
@@ -79,28 +112,29 @@ export default class Inscription extends Component{
                                 <select name="nationalite">
                                     <option>Française</option>
                                     <option>Autre</option>
-                                </select>
+                                    </select>
+                                </div>
+                                <div className="gauche">
+                                    <h3>Informations de connexion</h3>
+                                    <Saisie text="Identifiant (adresse mail UBO) *" name="mailUBO"/>
+                                    <label>Mot de passe *</label><br/>
+                                    <input type="password" value={this.state.password} onChange={(event) => this.sauvPassword(event)} name="password"/>
+                                    {this.secuMotDePasse()}<br/>
+                                    <p className="soustexte">Doit obligatoirement contenir 8 caractères comprenant lettres, chiffres et caractère spéciaux</p>
+                                    <label>Confirmation du mot de passe *</label><br/>
+                                    <input type="password" value={this.state.passwordVerif} onChange={(event) => this.sauvPassVerif(event)} name="passwordVerif"/><br/>
+                                    {this.verifMotDePasse()}
+                                </div>
                             </div>
-                            <div className="gauche">
-                                <h3>Informations de connexion</h3>
-                                <Saisie text="Identifiant (adresse mail UBO) *" name="mailUBO"/>
-                                <label>Mot de passe *</label><br/>
-                                <input type="password" value={this.state.password} onChange={(event) => this.sauvPassword(event)} name="password"/>
-                                {this.secuMotDePasse()}<br/>
-                                <p className="soustexte">Doit obligatoirement contenir 8 caractères comprenant lettres, chiffres et caractère spéciaux</p>
-                                <label>Confirmation du mot de passe *</label><br/>
-                                <input type="password" value={this.state.passwordVerif} onChange={(event) => this.sauvPassVerif(event)} name="passwordVerif"/><br/>
-                                {this.verifMotDePasse()}
-                            </div>
-                        </div>
-                        <input type="checkbox" id="infoMail" name="infoMail"/> <label htmlFor="infoMail">J'autorise l'application à m'informer par mail</label> <br/>
-                        <input type="checkbox" id="exact" name="exact"/> <label htmlFor="exact">Je certifie sur l'honneur l'exactitude des renseignements fournis *</label><br/>
-                        <button type="submit" onClick={() => this.props.chargerEtat(this.props.chemin)}>{this.props.validation}</button>
-                    </form>
+                            <input type="checkbox" id="infoMail" name="infoMail"/> <label htmlFor="infoMail">J'autorise l'application à m'informer par mail</label> <br/>
+                            <input type="checkbox" id="exact" name="exact"/> <label htmlFor="exact">Je certifie sur l'honneur l'exactitude des renseignements fournis *</label><br/>
+                            <button type="submit" onClick={() => this.props.chargerEtat(this.props.chemin)}>{this.props.validation}</button>
+                        </form>
 
-                    <p>Les champs * sont obligatoire</p>
-                    <button className="lien" type="button" onClick={() => this.props.chargerEtat(this.props.chemin)}>{this.props.retour}</button>
-                </div>
-            )
+                        <p>Les champs * sont obligatoire</p>
+                        <button className="lien" type="button" onClick={() => this.props.chargerEtat(this.props.chemin)}>{this.props.retour}</button>
+                    </div>
+                );
+            }
     }
 }

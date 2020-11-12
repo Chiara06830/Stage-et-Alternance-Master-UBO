@@ -76,6 +76,17 @@ class Gestion extends Component {
             return (
                 <ListeEntreprise chargerEtat={this.chargerEtat}/>
             );
+        }else if(this.state.charger === 8){
+            return(
+                <Inscription 
+                    titre="Modification des informations personelles"
+                    chemin={4}
+                    envoie="http://localhost:7146/inscrption/modif/enseignant"
+                    validation="Modifier"
+                    retour="Retour"
+                    chargerEtat={this.chargerEtat}
+                />
+            );
         }
     }
 }

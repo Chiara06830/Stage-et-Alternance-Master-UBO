@@ -7,8 +7,8 @@ class Admin extends Component {
     render(){
         return(
             <div>
-                <Info admin={true}/>
-                <TableauBord admin={true}/>
+                <Info admin={true} chargerEtat={this.props.chargerEtat}/>
+                <TableauBord admin={true} chargerEtat={this.props.chargerEtat}/>
                 <div className="deconnexion">
                 <label>Se déconnecter : </label>
                     <button type="submit" onClick={() => this.props.chargerEtat(0)}>

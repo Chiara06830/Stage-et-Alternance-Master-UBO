@@ -58,15 +58,30 @@ app.post('/inscription/creation', (req, res) => {
         req.body.etudiant.mailUBO, 
         req.body.etudiant.password];
 
+    let id = -1;
+
     let query = "INSERT INTO UTILISATEUR (`nom_utilisateur`, `prenom_utilisateur`, `mot_de_passe`, `email`) \
-        VALUES(\"" + columns[1] + "\", \"" + columns[0] + "\",\
+        VALUES(\"" + columns[1] + "\",\
+        \"" + columns[0] + "\",\
         \"" + columns[6] + "\", \
         \"" + columns[5] + "\")";
 
-    connection.connect();
+    let queryID = "SELECT UTILISATEUR.id_utilisateur FROM UTILISATEUR, ETUDIANT WHERE UTILISATEUR.email = \"" + columns[5] + "\"";
 
-    connection.query(query, function (error, results, fields) {
-        if (error) throw error;
+    let queryAddEtud = "INSERT INTO ETUDIANT(`nationalite_fr`, `date_naissance`, `UTILISATEUR_id_utilisateur`)\
+        VALUES (`" + columns[4] === "francaise"? 1 : 0 + "\
+        `" + columns[3] + "`\
+        " + id + ")";
+
+    connection.connect((err)=> {
+        if (err) throw err;
+        connection.query(query, (err, result)=> {
+            if (err) throw err;
+        });
+        connection.query(queryID, (err, result) =>{
+            if (err) throw err;
+            console.log(result);
+        });
     });
 });
 

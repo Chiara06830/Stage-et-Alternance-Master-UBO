@@ -19,34 +19,55 @@ app.use(cors());
 app.use(fileUpload());
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
+    
 
-//-------------------------GENERAl-------------------------//
+//-------------------------GENERAL-------------------------//
 
 //-----------Identification-----------
 let idUser = -1;
 app.post('/login', (req, res) => {
-    //******TO DO****** 
-    //<Attribuer idUser>
-
-    console.log(req.body);
     
-    /*let columns = [req.email, req.password];
+    let columns = [req.body.infos.email, req.body.infos.password];
+
     let query ='SELECT UTILISATEUR.id_utilisateur\
                 FROM UTILISATEUR \
-                WHERE UTILISATEUR.email = ?? AND UTILISATEUR.mot_de_passe = ??';
+                WHERE UTILISATEUR.email = \"' + columns[0] + '\" \
+                AND UTILISATEUR.mot_de_passe = \"' + columns[1] + '\"';
 
+    connection.connect();
 
-    connection.query(query, [columns], function (error, results, fields) {
+    connection.query(query, function (error, results, fields) {
         if (error) throw error;
-        console.log('le resultat de la requête est : ', results);
-        res = res.json(etudiant);
-    });*/
+        console.log(results);
+        if(results.length != 0){
+            idUser = results[0].id_utilisateur;
+        }
+    });
+
+    console.log(idUser);
 });
 
 //-----------Inscription-----------
 
 app.post('/inscription/creation', (req, res) => {
-    console.log(req.body);
+    let columns = [req.body.etudiant.prenom, 
+        req.body.etudiant.nom, 
+        req.body.etudiant.mailPerso, 
+        req.body.etudiant.dateNaissance, 
+        req.body.etudiant.nationalite,
+        req.body.etudiant.mailUBO, 
+        req.body.etudiant.password];
+
+    let query = "INSERT INTO UTILISATEUR (`nom_utilisateur`, `prenom_utilisateur`, `mot_de_passe`, `email`) \
+        VALUES(\"" + columns[1] + "\", \"" + columns[0] + "\",\
+        \"" + columns[6] + "\", \
+        \"" + columns[5] + "\")";
+
+    connection.connect();
+
+    connection.query(query, function (error, results, fields) {
+        if (error) throw error;
+    });
 });
 
 app.post('/inscrption/ajout/exterieur', (req, res) => {
@@ -67,9 +88,20 @@ app.post('/entreprise/ajout', (req, res) =>{
 });
 
 app.get('/entreprise/liste', (req, res) => {
-    const contenu ={
-        0:{"id" : 123, "Nom" : "Capgemini", "Site web" : "https://www.capgemini.com/", "Adresse": "Nantes"}
-    };
+    let contenu ={};
+
+    let query = "SELECT ENTREPRISE.id_entreprise, ENTREPRISE.nom_entreprse, ENTREPRISE.site_web ,ENTREPRISE.adresse_entreprise\
+                FROM ENTREPRISE, ETUDIANT\
+                WHERE ETUDIANT.ENTREPRISE_id_entreprise = ENTREPRISE.id_entreprise \
+                AND ETUDIANT.id_etudiant = " + idUser;
+
+    connection.connect();
+
+    connection.query(query, function (error, results, fields) {
+        if (error) throw error;
+        console.log(results);  
+        contenu = results; 
+    });
 
     res = res.json(contenu);
 });
@@ -83,35 +115,24 @@ app.post('/api/entretien/liste', (req, res) => {
 //-----------Récupération infos perso-----------
 
 app.get('/api/etudiant/info', (req, res) => {
-    const etudiants =
-        {"adresse_mail" : 'jean.dupont@etudiant.univ-brest.fr', 
-        "nom_etudiant" : "Dupont", 
-        "prenom_etudiant" : "Jean", 
-        "filiere" : "ILIADE",
-        "date_naissance" : "12-05-2000",
-        "nationalite" : "FR",
-        "alternance" : "oui"}
-    ;
+    let etudiants;
 
-    /*connection.connect();
-    let userId = 1;
+    connection.connect();
 
-    let query ='SELECT ETUDIANT.adresse_mail, UTILISATEUR.nom_utilisateur as nom_etudiant, UTILISATEUR.prenom_utilisateur as prenom_etudiant, ETUDIANT.filiere, ETUDIANT.date_naissance, ETUDIANT.nationalite_fr, ETUDIANT.alternance\
+    let query ='SELECT UTILISATEUR.email, UTILISATEUR.nom_utilisateur as nom_etudiant, UTILISATEUR.prenom_utilisateur as prenom_etudiant, ETUDIANT.filiere, ETUDIANT.date_naissance, ETUDIANT.nationalite_fr, ETUDIANT.alternance\
                 FROM ETUDIANT, UTILISATEUR\
-                WHERE UTILISATEUR.id_utilisateur = ETUDIANT.UTILISATEUR_id_utilisateur AND ETUDIANT.id_etudiant = ?';
+                WHERE UTILISATEUR.id_utilisateur = ETUDIANT.UTILISATEUR_id_utilisateur AND ETUDIANT.id_etudiant = ' + idUser;
 
-
-    connection.query(query, [userId], function (error, results, fields) {
+    connection.query(query, function (error, results, fields) {
         if (error) throw error;
-        console.log('le resultat de la requête est : ', results[0]);
-        res = res.json(etudiant);
-    });*/
+        etudiants = results[0];
+    });
 
     res = res.json(etudiants);
 });
 
 //-----------Récupération CV et Lettre-----------
-app.post('/upload/etudiant/cv', (res, req) =>{
+/*app.post('/upload/etudiant/cv', (res, req) =>{
     console.log(req.body);
     if(req.files === null){ //si on essaie de récuperer rien du tout
         return res.statusCode(400).json({msg : 'Auncun fihcier chargé'});
@@ -144,7 +165,7 @@ app.post('/upload/etudiant/lettre', (res, req) =>{
 
         res.json({fileName: file.name, filePath: `/uploads/cv/${file.name}`})
     });
-});
+});*/
 
 //-----------Récupération Candidature Entretien et Stage-----------
 

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import axios from 'axios';
 
 export default class Connexion extends Component{
     constructor(props){
@@ -9,7 +10,21 @@ export default class Connexion extends Component{
         }
     }
 
-    handleSubmit() {
+    handleSubmit = (e) => {
+        e.preventDefault();
+        const infos = {
+            email : this.state.email,
+            password : this.state.password
+        };
+
+        axios.post('http://localhost:7146/login', {infos})
+        .then(res =>{
+            console.log(res);
+        })
+        .catch(err =>{
+            if(err) throw err;
+        })
+
         if(this.state.email.match(/^.*@etudiant.univ-brest.fr$/)){
             this.props.chargerEtat(1)
         }else if(this.state.email.match(/^.*@univ-brest.fr$/)){
@@ -35,12 +50,12 @@ export default class Connexion extends Component{
         return (
             <div className="connexion">
                 <h1>Connexion</h1>
-                <form action="http://localhost:7146/login" method="POST" >
-                    <input type="text" placeholder="Adresse mail" name="email" value={this.state.email} onChange={(event) => this.changeEmail(event)}/><br/>
-                    <input type="password" placeholder="Mot de passe" name="password" value={this.state.password} onChange={(event) => this.changePassword(event)}/><br/>
-                    <button type="submit" onClick={() => this.handleSubmit()}>Se connecter</button><br/>
+                <form onSubmit={this.handleSubmit}>
+                    <input type="text" placeholder="Adresse mail" value={this.state.email} onChange={(event) => this.changeEmail(event)}/><br/>
+                    <input type="password" placeholder="Mot de passe" value={this.state.password} onChange={(event) => this.changePassword(event)}/><br/>
+                    <button type="submit">Se connecter</button><br/>
                 </form>
-                <a href="google.com">Mot de passe oublié</a><br/>
+                <button className="lien" type="button">Mot de passe oublié</button><br/>
                 <p>Vous n'êtes pas encore inscrit ?</p>
                 <button className="lien" type="button" onClick={() => this.props.chargerEtat(3)}>S'inscrire</button>
             </div>

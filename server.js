@@ -1,13 +1,14 @@
 const cors = require('cors');
 const express = require('express');
+const mysql = require('mysql'); 
 const fileUpload = require('express-fileupload');
 const bodyParser = require('body-parser');
+
 const app = express();
 const port = 7146;
 
-const mysql = require('mysql');  
-
-const connection = mysql.createConnection({
+const pool = mysql.createPool({
+    connectionLimit : 10,
     host     : 'localhost',
     user     : 'root',
     password : 'motdepasse',
@@ -19,7 +20,6 @@ app.use(cors());
 app.use(fileUpload());
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
-    
 
 //-------------------------GENERAL-------------------------//
 
@@ -34,17 +34,16 @@ app.post('/login', (req, res) => {
                 WHERE UTILISATEUR.email = \"' + columns[0] + '\" \
                 AND UTILISATEUR.mot_de_passe = \"' + columns[1] + '\"';
 
-    connection.connect();
-
-    connection.query(query, function (error, results, fields) {
-        if (error) throw error;
-        console.log(results);
-        if(results.length != 0){
-            idUser = results[0].id_utilisateur;
-        }
+    pool.getConnection(function (err, connection) {
+        if(err) throw err;
+        connection.query(query, function (error, results, fields) {
+            if (error) throw error;
+            console.log(results);
+            if(results.length != 0){
+                idUser = results[0].id_utilisateur;
+            }
+        });
     });
-
-    console.log(idUser);
 });
 
 //-----------Inscription-----------
@@ -66,23 +65,31 @@ app.post('/inscription/creation', (req, res) => {
         \"" + columns[6] + "\", \
         \"" + columns[5] + "\")";
 
-    let queryID = "SELECT UTILISATEUR.id_utilisateur FROM UTILISATEUR, ETUDIANT WHERE UTILISATEUR.email = \"" + columns[5] + "\"";
+    let queryID = "SELECT UTILISATEUR.id_utilisateur FROM UTILISATEUR WHERE UTILISATEUR.email = \"" + columns[5] + "\"";
 
-    let queryAddEtud = "INSERT INTO ETUDIANT(`nationalite_fr`, `date_naissance`, `UTILISATEUR_id_utilisateur`)\
-        VALUES (`" + columns[4] === "francaise"? 1 : 0 + "\
-        `" + columns[3] + "`\
-        " + id + ")";
+    let natio = columns[4] === "francaise"? 1 : 0;
+    let queryAddEtud = "";
 
-    connection.connect((err)=> {
+    pool.getConnection(function (err, connection) {
         if (err) throw err;
         connection.query(query, (err, result)=> {
             if (err) throw err;
         });
-        connection.query(queryID, (err, result) =>{
+        connection.query(queryID, (err, result) => {
             if (err) throw err;
-            console.log(result);
+            id = result[0].id_utilisateur;
+            queryAddEtud = "INSERT INTO ETUDIANT(`nationalite_fr`, `date_naissance`, `UTILISATEUR_id_utilisateur`, `alternance`, `email_perso`)\
+                VALUES (" + natio + ",\
+                DATE(\"" + columns[3] + "\"),\
+                " + result[0].id_utilisateur + ",\
+                0, \
+                \"" + columns[2] +"\")";
+            connection.query(queryAddEtud, (err, result) => {
+                if(err) throw err;
+            });
         });
     });
+
 });
 
 app.post('/inscrption/ajout/exterieur', (req, res) => {
@@ -110,8 +117,6 @@ app.get('/entreprise/liste', (req, res) => {
                 WHERE ETUDIANT.ENTREPRISE_id_entreprise = ENTREPRISE.id_entreprise \
                 AND ETUDIANT.id_etudiant = " + idUser;
 
-    connection.connect();
-
     connection.query(query, function (error, results, fields) {
         if (error) throw error;
         console.log(results);  
@@ -132,18 +137,29 @@ app.post('/api/entretien/liste', (req, res) => {
 app.get('/api/etudiant/info', (req, res) => {
     let etudiants;
 
-    connection.connect();
+    console.log(idUser);
 
     let query ='SELECT UTILISATEUR.email, UTILISATEUR.nom_utilisateur as nom_etudiant, UTILISATEUR.prenom_utilisateur as prenom_etudiant, ETUDIANT.filiere, ETUDIANT.date_naissance, ETUDIANT.nationalite_fr, ETUDIANT.alternance\
                 FROM ETUDIANT, UTILISATEUR\
-                WHERE UTILISATEUR.id_utilisateur = ETUDIANT.UTILISATEUR_id_utilisateur AND ETUDIANT.id_etudiant = ' + idUser;
+                WHERE utilisateur.id_utilisateur = ' + idUser;
 
-    connection.query(query, function (error, results, fields) {
-        if (error) throw error;
-        etudiants = results[0];
+    pool.getConnection(function (err, connection) {
+        if(err) throw err;
+        connection.query(query, function (error, results, fields) {
+            if (error) throw error;
+            etudiants = {
+                adresse_mail : results[0].email,
+                nom_etudiant : results[0].nom_etudiant,
+                prenom_etudiant : results[0].prenom_etudiant,
+                filiere : results[0].filiere,
+                date_naissance : results[0].date_naissance,
+                nationalite : results[0].nationalite_fr,
+                alternance : results[0].alternance
+            }
+            console.log(etudiants);
+            res = res.json(etudiants);
+        });
     });
-
-    res = res.json(etudiants);
 });
 
 //-----------Récupération CV et Lettre-----------

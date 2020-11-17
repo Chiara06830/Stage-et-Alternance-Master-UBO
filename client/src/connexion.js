@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import axios from 'axios';
 
 export default class Connexion extends Component{
     constructor(props){
@@ -10,20 +9,16 @@ export default class Connexion extends Component{
         }
     }
 
-    handleSubmit = (e) => {
-        e.preventDefault();
-        const infos = {
-            email : this.state.email,
-            password : this.state.password
-        };
-
-        axios.post('http://localhost:7146/login', {infos})
-        .then(res =>{
-            console.log(res);
-        })
-        .catch(err =>{
-            if(err) throw err;
-        })
+    handleSubmit = () => {
+        fetch(`http://localhost:7146/login?email=${this.state.email}&password=${this.state.password}`)
+            .then(res => res.json())
+            .then(res => {
+                console.log(res.data);
+                this.props.setId(res.data);
+            })
+            .catch(err =>{
+                if(err) throw err;
+            });
 
         if(this.state.email.match(/^.*@etudiant.univ-brest.fr$/)){
             this.props.chargerEtat(1)

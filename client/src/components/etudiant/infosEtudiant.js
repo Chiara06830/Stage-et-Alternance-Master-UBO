@@ -22,7 +22,7 @@ class InfoPerso extends Component {
     }
 
     fetchUsers() {
-        fetch('http://localhost:7146/api/etudiant/info')
+        fetch(`http://localhost:7146/api/etudiant/info?id=${this.props.getIdUtilisateur}`)
             .then(response => response.json())
             .then(data =>{
                 this.setState({
@@ -93,7 +93,7 @@ export default class Info extends Component{
     render(){
         return (
             <div id="partieGauche">
-                <InfoPerso chargerEtat={this.props.chargerEtat}/>
+                <InfoPerso chargerEtat={this.props.chargerEtat} getIdUtilisateur = {this.props.getIdUtilisateur}/>
                 <GestionEntreprise chargerEtat={this.props.chargerEtat}/>
             </div>
         );

@@ -9,7 +9,7 @@ export default class Etudiant extends Component {
     render(){
         return(
             <div >
-                <Info chargerEtat={this.props.chargerEtat}/>
+                <Info chargerEtat={this.props.chargerEtat} getIdUtilisateur={this.props.getIdUtilisateur}/>
                 <TableauBord chargerEtat={this.props.chargerEtat}/>
                 <div className="deconnexion">
                 <label>Se déconnecter : </label>

@@ -12,8 +12,15 @@ class Gestion extends Component {
     constructor(props){
         super(props);
         this.state = {
-            charger : 0
+            charger : 0,
+            idUtilisateur : -1
         }
+    }
+
+    setIdUtilisateur = (valeur) => {
+        this.setState({
+            idUtilisateur : valeur
+        })
     }
 
     chargerEtat = (valeur) => {
@@ -25,11 +32,16 @@ class Gestion extends Component {
     render() {
         if(this.state.charger === 0){
             return (
-                <Connexion chargerEtat={this.chargerEtat}/>
+                <Connexion 
+                    chargerEtat={this.chargerEtat}
+                    setId={this.setIdUtilisateur}
+                />
             )
         }else if(this.state.charger === 1){
             return(
-                <Etudiant chargerEtat={this.chargerEtat}/>
+                <Etudiant 
+                    chargerEtat={this.chargerEtat}
+                    getIdUtilisateur={this.state.idUtilisateur}/>
             );
         }else if(this.state.charger === 2){
             return(

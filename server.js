@@ -137,27 +137,29 @@ app.get('/api/etudiant/info', (req, res) => {
 
     const {id} = req.query;
 
-    let query ='SELECT UTILISATEUR.email, UTILISATEUR.nom_utilisateur as nom_etudiant, UTILISATEUR.prenom_utilisateur as prenom_etudiant, ETUDIANT.filiere, ETUDIANT.date_naissance, ETUDIANT.nationalite_fr, ETUDIANT.alternance\
+    if(id > 0){
+        let query ='SELECT UTILISATEUR.email, UTILISATEUR.nom_utilisateur as nom_etudiant, UTILISATEUR.prenom_utilisateur as prenom_etudiant, ETUDIANT.filiere, ETUDIANT.date_naissance, ETUDIANT.nationalite_fr, ETUDIANT.alternance\
                 FROM ETUDIANT, UTILISATEUR\
                 WHERE utilisateur.id_utilisateur = ' + id;
 
-    pool.getConnection(function (err, connection) {
-        if(err) throw err;
-        connection.query(query, function (error, results, fields) {
-            if (error) throw error;
-            etudiants = {
-                adresse_mail : results[0].email,
-                nom_etudiant : results[0].nom_etudiant,
-                prenom_etudiant : results[0].prenom_etudiant,
-                filiere : results[0].filiere,
-                date_naissance : results[0].date_naissance,
-                nationalite : results[0].nationalite_fr,
-                alternance : results[0].alternance
-            }
-            console.log(etudiants);
-            res = res.json(etudiants);
+        pool.getConnection(function (err, connection) {
+            if(err) throw err;
+            connection.query(query, function (error, results, fields) {
+                if (error) throw error;
+                etudiants = {
+                    adresse_mail : results[0].email,
+                    nom_etudiant : results[0].nom_etudiant,
+                    prenom_etudiant : results[0].prenom_etudiant,
+                    filiere : results[0].filiere,
+                    date_naissance : results[0].date_naissance,
+                    nationalite : results[0].nationalite_fr,
+                    alternance : results[0].alternance
+                }
+                console.log(etudiants);
+                res = res.json(etudiants);
+            });
         });
-    });
+    }
 });
 
 //-----------Récupération CV et Lettre-----------

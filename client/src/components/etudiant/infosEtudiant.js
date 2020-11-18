@@ -13,7 +13,9 @@ class InfoPerso extends Component {
             filiere : "ILIADE",
             dateNaissance : "18-12-1963",
             nationalite : "EN",
-            alternance : "oui"
+            alternance : "oui",
+
+            id : -2
         }
     }
 
@@ -22,7 +24,10 @@ class InfoPerso extends Component {
     }
 
     fetchUsers() {
-        fetch(`http://localhost:7146/api/etudiant/info?id=${this.props.getIdUtilisateur}`)
+        this.setState({
+            id : this.props.getIdUtilisateur
+        })
+        fetch(`http://localhost:7146/api/etudiant/info?id=${this.state.id}`)
             .then(response => response.json())
             .then(data =>{
                 this.setState({
@@ -46,6 +51,10 @@ class InfoPerso extends Component {
     }
 
     render(){
+        console.log("ID " + this.props.getIdUtilisateur);
+        if(this.props.getIdUtilisateur > 0){
+            this.fetchUsers();
+        }
         return(
             <div>
                 <h2>Informations personelles</h2>

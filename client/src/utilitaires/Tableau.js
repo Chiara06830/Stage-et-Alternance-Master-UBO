@@ -22,7 +22,6 @@ class Tableau extends Component{
                 this.setState({
                     contenu: data 
                 });
-                console.log("Tableau : ", data);
             })
             .catch(error => this.setState({error}));
     }
@@ -66,7 +65,6 @@ class Tableau extends Component{
 
     ajoutPopModif(){
         const cases = document.getElementsByClassName("modifier");
-        console.log(cases);
         for(let i=0; i<cases.length; i++){
             cases[i].innerHTML = this.props.pop;
         }

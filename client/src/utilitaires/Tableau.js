@@ -16,7 +16,8 @@ class Tableau extends Component{
     }
 
     fetchContenu(){
-        fetch(this.props.chemin)
+        const chemin = this.props.chemin + `?id=${this.props.getIdUtilisateur}`
+        fetch(chemin)
             .then(response => response.json())
             .then(data =>{
                 this.setState({

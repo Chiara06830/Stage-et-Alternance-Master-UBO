@@ -15,7 +15,7 @@ class InfoPerso extends Component {
             nationalite : "EN",
             alternance : "oui",
 
-            id : -2
+            passage : false
         }
     }
 
@@ -24,10 +24,7 @@ class InfoPerso extends Component {
     }
 
     fetchUsers() {
-        this.setState({
-            id : this.props.getIdUtilisateur
-        })
-        fetch(`http://localhost:7146/api/etudiant/info?id=${this.state.id}`)
+        fetch(`http://localhost:7146/api/etudiant/info?id=${this.props.getIdUtilisateur}`)
             .then(response => response.json())
             .then(data =>{
                 this.setState({
@@ -36,11 +33,10 @@ class InfoPerso extends Component {
                 console.log("Etudiant : ", data);
                 this.attribution();
             })
-            .catch(error => this.setState({ error}));
+            .catch(error => this.setState({error}));
     }
 
     attribution(){
-        console.log("Informations étudiant attribuées");
         this.setState({numEtudiant : this.state.etudiants['adresse_mail']});
         this.setState({nom : this.state.etudiants['nom_etudiant']});
         this.setState({prenom : this.state.etudiants['prenom_etudiant']});
@@ -51,10 +47,6 @@ class InfoPerso extends Component {
     }
 
     render(){
-        console.log("ID " + this.props.getIdUtilisateur);
-        if(this.props.getIdUtilisateur > 0){
-            this.fetchUsers();
-        }
         return(
             <div>
                 <h2>Informations personelles</h2>

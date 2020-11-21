@@ -38,6 +38,7 @@ app.get('/login', (req, res) => {
             if (error) throw error;
             if(results.length != 0){
                 let id = results[0].id_utilisateur
+                console.log("ID user : " + id);
                 return res.json({
                     data : id
                 });
@@ -151,12 +152,11 @@ app.get('/api/etudiant/info', (req, res) => {
                     nom_etudiant : results[0].nom_etudiant,
                     prenom_etudiant : results[0].prenom_etudiant,
                     filiere : results[0].filiere,
-                    date_naissance : results[0].date_naissance,
-                    nationalite : results[0].nationalite_fr,
-                    alternance : results[0].alternance
+                    date_naissance : results[0].date_naissance.toISOString().split("T")[0],
+                    nationalite : results[0].nationalite_fr === 1 ? "Francaise" : "Non Francaise",
+                    alternance : results[0].alternance === 1 ? "Oui" : "Non"
                 }
-                console.log(etudiants);
-                res = res.json(etudiants);
+                return res.json(etudiants);
             });
         });
     }
@@ -198,7 +198,7 @@ app.post('/upload/etudiant/lettre', (res, req) =>{
     });
 });
 
-//-----------Récupération Candidature Entretien et Stage-----------
+//-----------Récupérer Candidature Entretien et Stage-----------
 
 app.post('/api/etudiant/candidature', (req, res) =>{
     console.log(req.body);
@@ -215,11 +215,32 @@ app.post('/api/etudiant/stage', (req, res) =>{
 //-----------Transmettre tableaux page etudiant-----------
 
 app.get('/api/tableau/cv', (req, res) => {
-    const contenu ={
-        0:{"id" : 12, "Date de dépôt" : "prout", "CV" : "woop", "Date consultation": "pilou", "Enseignant consultant" : "pata", "Commentaire" : "pouet"}
-    };
+    /*const {id} = req.query;
 
-    res = res.json(contenu);
+    let contenu = {};
+
+    let query = "SELECT DOCUMENT.date_depot, DOCUMENT.lien, DOCUMENT.date_consultation, UTILISATEUR.nom_utilisateur, UTILISATEUR.prenom_utilisateur, DOCUMENT.commentaire \
+        FROM DOCUMENT, UTILISATEUR, ETUDIANT \
+        WHERE DOCUMENT.ETUDIANT_id_etudiant = ETUDIANT.id_etudiant AND ETUDIANT.UTILISATEUR_id_utilisateur = " + id + " \
+        AND DOCUMENT.ENSEIGNANT_id_enseignant = ENSEIGNANT.id_enseignant\
+        AND UTILISATEUR.id_utilisateur = ENSEIGNANT.UTILISATEUR_id_utilisateur";
+    
+    pool.getConnection(function (err, connection) {
+        if (err) throw err;
+        connection.query(query, function (error, results, fields){
+            if (error) throw error;
+            for(let i=0; i<results.length; i++){
+                contenu['' + i] = {
+                    "Date de dépôt" : results[i].date_depot.toISOString().split("T")[0],
+                    "CV" : results[i].lien,
+                    "Date consultation" : results[i].date_consultation.toISOString().split("T")[0],
+                    "Enseignant consultant" : results[i].nom_utilisateur + " " + results[i].prenom_utilisateur,
+                    "Commentaire" : results[i].commentaire
+                }
+            }
+            res = res.json(contenu);
+        });
+    });*/
 });
 
 app.get('/api/tableau/lettre', (req, res) => {
@@ -229,24 +250,90 @@ app.get('/api/tableau/lettre', (req, res) => {
 });
 
 app.get('/api/tableau/candidature', (req, res) => {
-    const contenu ={};
+    const {id} = req.query;
 
-    res = res.json(contenu);
+    let contenu = {};
+
+    let query = "SELECT CANDIDATURE.id_candidature, ENTREPRISE.nom_entreprse, CANDIDATURE.origine_offre\
+        FROM CANDIDATURE, ENTREPRISE, ETUDIANT\
+        WHERE CANDIDATURE.ETUDIANT_id_etudiant = " + id + " AND CANDIDATURE.ENTREPRISE_id_entreprise = ENTREPRISE.id_entreprise ";
+    
+        pool.getConnection(function (err, connection) {
+        if (err) throw err;
+        connection.query(query, function (error, results, fields){
+            if (error) throw error;
+            for(let i=0; i<results.length; i++){
+                contenu['' + i] = {
+                    "n° de candidature" : results[i].id_candidature,
+                    "Entreprise" : results[i].nom_entreprse,
+                    "Origine de l'offre" : results[i].origine_offre
+                }
+            }
+            res = res.json(contenu);
+        });
+    });
 });
 
 app.get('/api/tableau/entretien', (req, res) => {
-    const contenu ={};
+    const {id} = req.query;
 
-    res = res.json(contenu);
+    let contenu = {};
+
+    let query = "SELECT ENTREPRISE.nom_entreprse, INTERVENANT.nom_intervenant,INTERVENANT.prenom_intervenant, ENTRETIEN.date_entretien\
+        FROM ENTRETIEN, ENTREPRISE, INTERVENANT \
+        WHERE ENTRETIEN.ETUDIANT_id_etudiant = " + id + " AND ENTRETIEN.INTERVENANT_id_intervanant = INTERVENANT.id_intervanant AND INTERVENANT.ENTREPRISE_id_entreprise = ENTREPRISE.id_entreprise";
+
+    pool.getConnection(function (err, connection) {
+        if (err) throw err;
+        connection.query(query, function (error, results, fields){
+            if (error) throw error;
+            for(let i=0; i<results.length; i++){
+                contenu['' + i] = {
+                    "Personel" : "Oui",
+                    "Entreprise" : results[i].nom_entreprse,
+                    "Intervenant" : results[i].nom_intervenant + " " + results[i].prenom_intervenant,
+                    "Date" : results[i].date_entretien.toISOString().split("T")[0]
+                }
+            }
+            res = res.json(contenu);
+        });
+    });
 });
 
 app.get('/api/tableau/stage', (req, res) => {
-    const contenu ={
-        0:{"id" : 46, "Entreprise":"prout", "Type de contrat":"pouet", "Posibilité d'alternance": "woop"},
-        1:{"id" : 25, "Entreprise":"prout", "Type de contrat":"pouet", "Posibilité d'alternance": "woop"}
+    const {id} = req.query;
+
+    let contenu = {
+        0 : {
+        Entreprise : "",
+        "Type de contrat" : "",
+        "Posibilité d'alternance" : ""}
     };
 
-    res = res.json(contenu);
+    let queryEntreprise = "SELECT ENTREPRISE.id_entreprise, ENTREPRISE.nom_entreprse, ENTREPRISE.site_web ,ENTREPRISE.adresse_entreprise\
+                FROM ENTREPRISE, ETUDIANT\
+                WHERE ETUDIANT.ENTREPRISE_id_entreprise = ENTREPRISE.id_entreprise \
+                AND ETUDIANT.id_etudiant = " + id;
+
+    let queryEtuidant = "SELECT ETUDIANT.type_contrat, ETUDIANT.alternance FROM ETUDIANT WHERE ETUDIANT.id_etudiant = " + id;
+
+    pool.getConnection(function (err, connection) {
+        if (err) throw err;
+        connection.query(queryEntreprise, function (error, results, fields){
+            if (error) throw error;
+            for(let i=0; i<results.length; i++){
+                contenu[0]["Entreprise"] = results[i].nom_entreprse;
+            }
+            connection.query(queryEtuidant, function (error, results, fields){
+                if (error) throw error;
+                for(let i=0; i<results.length; i++){
+                    contenu[0]["Type de contrat"] = results[i].type_contrat;
+                    contenu[0]["Posibilité d'alternance"] = results[i].alternance === 0 ? "Non" : "Oui";
+                }
+                res = res.json(contenu);
+            });
+        });
+    });
 });
 
 //-------------------------ENSEIGNANT-------------------------//

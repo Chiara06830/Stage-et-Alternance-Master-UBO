@@ -105,7 +105,15 @@ app.post('inscrption/modif/enseignant', (req, res) => {
 
 //-----------Ajout entreprise----------
 app.post('/entreprise/ajout', (req, res) =>{
-    console.log(req.body);
+    const query = "INSERT INTO entreprise (`nom_entreprse`, `adresse_entreprise`, `site_web`)\
+    VALUES (\"" + req.body.entreprise.nom + "\", \"" + req.body.entreprise.adresse + "\", \"" + req.body.entreprise.site +"\")";
+
+    pool.getConnection(function (err, connection) {
+        if (err) throw err;
+        connection.query(query, (err, result)=> {
+            if (err) throw err;
+        });
+    });
 });
 
 app.get('/entreprise/liste', (req, res) => {
@@ -201,7 +209,8 @@ app.post('/upload/etudiant/lettre', (res, req) =>{
 //-----------Récupérer Candidature Entretien et Stage-----------
 
 app.post('/api/etudiant/candidature', (req, res) =>{
-    console.log(req.body);
+    const query = "INSERT INTO candidature (`origine_offre`, `ETUDIANT_id_etudiant`, `ENTREPRISE_id_entreprise`)\
+        VALUES (\"" +  req.body.candidature.origine + "\", " + req.body.candidature.id + ", " + req.body.candidature.entreprise + ");"
 });
 
 app.post('/api/etudiant/entretien', (req, res) =>{
@@ -303,12 +312,7 @@ app.get('/api/tableau/entretien', (req, res) => {
 app.get('/api/tableau/stage', (req, res) => {
     const {id} = req.query;
 
-    let contenu = {
-        0 : {
-        Entreprise : "",
-        "Type de contrat" : "",
-        "Posibilité d'alternance" : ""}
-    };
+    let contenu = {};
 
     let queryEntreprise = "SELECT ENTREPRISE.id_entreprise, ENTREPRISE.nom_entreprse, ENTREPRISE.site_web ,ENTREPRISE.adresse_entreprise\
                 FROM ENTREPRISE, ETUDIANT\
@@ -322,13 +326,17 @@ app.get('/api/tableau/stage', (req, res) => {
         connection.query(queryEntreprise, function (error, results, fields){
             if (error) throw error;
             for(let i=0; i<results.length; i++){
-                contenu[0]["Entreprise"] = results[i].nom_entreprse;
+                contenu[i + ''] = {
+                    "Entreprise" : results[i].nom_entreprse,
+                    "Type de contrat" : "",
+                    "Posibilité d'alternance" : ""
+                }
             }
             connection.query(queryEtuidant, function (error, results, fields){
                 if (error) throw error;
                 for(let i=0; i<results.length; i++){
-                    contenu[0]["Type de contrat"] = results[i].type_contrat;
-                    contenu[0]["Posibilité d'alternance"] = results[i].alternance === 0 ? "Non" : "Oui";
+                    contenu[i]["Type de contrat"] = results[i].type_contrat;
+                    contenu[i]["Posibilité d'alternance"] = results[i].alternance === 0 ? "Non" : "Oui";
                 }
                 res = res.json(contenu);
             });

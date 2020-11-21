@@ -13,7 +13,6 @@ export default class Connexion extends Component{
         fetch(`http://localhost:7146/login?email=${this.state.email}&password=${this.state.password}`)
             .then(res => res.json())
             .then(res => {
-                console.log(res.data);
                 this.props.setId(res.data);
                 if(this.state.email.match(/^.*@etudiant.univ-brest.fr$/)){
                     this.props.chargerEtat(1)

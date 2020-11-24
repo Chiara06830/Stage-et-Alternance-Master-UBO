@@ -7,8 +7,8 @@ class Enseignant extends Component {
     render(){
         return(
             <div>
-                <Info admin={false} chargerEtat={this.props.chargerEtat}/>
-                <TableauBord admin={false} chargerEtat={this.props.chargerEtat}/>
+                <Info admin={false} chargerEtat={this.props.chargerEtat} getIdUtilisateur={this.props.getIdUtilisateur}/>
+                <TableauBord admin={false} chargerEtat={this.props.chargerEtat} getIdUtilisateur={this.props.getIdUtilisateur}/>
                 <div className="deconnexion">
                 <label>Se déconnecter : </label>
                     <button type="submit" onClick={() => this.props.chargerEtat(0)}>

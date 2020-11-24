@@ -45,7 +45,10 @@ class Gestion extends Component {
             );
         }else if(this.state.charger === 2){
             return(
-                <Enseignant chargerEtat={this.chargerEtat}/>
+                <Enseignant 
+                    chargerEtat={this.chargerEtat}
+                    getIdUtilisateur={this.state.idUtilisateur}
+                />
             );
         }else if(this.state.charger === 3){
             return(
@@ -60,7 +63,9 @@ class Gestion extends Component {
             );
         }else if(this.state.charger === 4){
             return(
-                <Admin chargerEtat={this.chargerEtat}/>
+                <Admin 
+                    chargerEtat={this.chargerEtat}
+                    getIdUtilisateur={this.state.idUtilisateur}/>
             );
         }else if(this.state.charger === 5){
             return(
@@ -76,17 +81,18 @@ class Gestion extends Component {
         }else if(this.state.charger === 6){
             return(
                 <Inscription 
-                    titre="Modification des informations personelles"
+                    titre="Ajouter un étudiant"
                     chemin={2}
-                    envoie="http://localhost:7146/inscrption/ajout/exterieur"
-                    validation="Modifier"
+                    envoie="http://localhost:7146/inscription/creation"
+                    validation="Ajouter"
                     retour="Retour"
                     chargerEtat={this.chargerEtat}
                 />
             );
         }else if(this.state.charger === 7){
             return (
-                <ListeEntreprise chargerEtat={this.chargerEtat}/>
+                <ListeEntreprise 
+                    chargerEtat={this.chargerEtat}/>
             );
         }else if(this.state.charger === 8){
             return(

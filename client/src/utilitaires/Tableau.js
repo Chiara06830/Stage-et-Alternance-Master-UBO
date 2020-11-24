@@ -53,6 +53,11 @@ class Tableau extends Component{
                                 <img src=\"/img/csm_Accroche_dechets_menagers_28360027d4.png\" alt=\"bouton modifier\" width=\"20\" height=\"20\">\
                             </button>\
                         </form>";
+                }else if(this.props.nomColonne[i] === "Site web"){
+                    infos += "<td />\
+                    <a target=\"_blank\" className=\"transparent\" class=\"voir\" href=\"" + this.state.contenu["" + j][this.props.nomColonne[i]] + "\">\ "
+                        + this.state.contenu["" + j][this.props.nomColonne[i]] +
+                    "</a>";
                 }else{
                     //remplie la case avec l'info de contenu
                     infos += "<td>" + this.state.contenu[j][this.props.nomColonne[i]] +" </td>" ;

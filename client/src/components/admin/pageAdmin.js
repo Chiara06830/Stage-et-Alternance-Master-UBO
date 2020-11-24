@@ -7,7 +7,7 @@ class Admin extends Component {
     render(){
         return(
             <div>
-                <Info admin={true} chargerEtat={this.props.chargerEtat}/>
+                <Info admin={true} chargerEtat={this.props.chargerEtat} getIdUtilisateur={this.props.getIdUtilisateur}/>
                 <TableauBord admin={true} chargerEtat={this.props.chargerEtat}/>
                 <div className="deconnexion">
                 <label>Se déconnecter : </label>

@@ -91,10 +91,6 @@ app.post('/inscription/creation', (req, res) => {
 
 });
 
-app.post('/inscrption/ajout/exterieur', (req, res) => {
-    console.log(req.body);
-});
-
 app.post('inscrption/modif/etuidant', (req, res) => {
     console.log(req.body);
 });
@@ -120,17 +116,22 @@ app.get('/entreprise/liste', (req, res) => {
     let contenu ={};
 
     let query = "SELECT ENTREPRISE.id_entreprise, ENTREPRISE.nom_entreprse, ENTREPRISE.site_web ,ENTREPRISE.adresse_entreprise\
-                FROM ENTREPRISE, ETUDIANT\
-                WHERE ETUDIANT.ENTREPRISE_id_entreprise = ENTREPRISE.id_entreprise \
-                AND ETUDIANT.id_etudiant = " + idUser;
+                FROM ENTREPRISE";
 
-    connection.query(query, function (error, results, fields) {
-        if (error) throw error;
-        console.log(results);  
-        contenu = results; 
+    pool.getConnection(function (err, connection) {
+        if (err) throw err;
+        connection.query(query, (err, results)=> {
+            if (err) throw err;
+            for(let i=0; i<results.length; i++){
+                contenu['' + i] = {
+                    "Nom" : results[i].nom_entreprse,
+                    "Site web" : results[i].site_web,
+                    "Adresse" : results[i].adresse_entreprise,
+                }
+            }  
+            res = res.json(contenu);
+        });
     });
-
-    res = res.json(contenu);
 });
 
 app.post('/api/entretien/liste', (req, res) => {
@@ -209,12 +210,30 @@ app.post('/upload/etudiant/lettre', (res, req) =>{
 //-----------Récupérer Candidature Entretien et Stage-----------
 
 app.post('/api/etudiant/candidature', (req, res) =>{
-    const query = "INSERT INTO candidature (`origine_offre`, `ETUDIANT_id_etudiant`, `ENTREPRISE_id_entreprise`)\
-        VALUES (\"" +  req.body.candidature.origine + "\", " + req.body.candidature.id + ", " + req.body.candidature.entreprise + ");"
+    const queryID = "SELECT entreprise.id_entreprise, etudiant.id_etudiant \
+        FROM entreprise, etudiant \
+        WHERE entreprise.nom_entreprse = \"" + req.body.candidature.entreprise + "\" \
+        AND etudiant.UTILISATEUR_id_utilisateur = " + req.body.candidature.id;
+
+    pool.getConnection(function (err, connection) {
+        if (err) throw err;
+        connection.query(queryID, function (error, results, fields){
+            if (error) throw error;
+            const query = "INSERT INTO candidature (`origine_offre`, `ETUDIANT_id_etudiant`, `ENTREPRISE_id_entreprise`)\
+                VALUES (\"" +  req.body.candidature.origine + "\", " + results[0].id_etudiant + ", " + results[0].id_entreprise + ");";
+            connection.query(query, function(error, results, fileds){
+                if (error) throw error;
+            })
+        });
+    });
 });
 
 app.post('/api/etudiant/entretien', (req, res) =>{
-    console.log(req.body);
+    let query = "INSERT INTO ENTRETIEN(`date_entretien`, `est_annulle`)\
+        VALUES (DATE(\"" + req.body.date + "\", " + (req.body.candidature === 'on' ? 1 : 0) + ")"
+
+    console.log(req.body.entretien);
+    //for(let i=0; i<req.body.length)
 });
 
 app.post('/api/etudiant/stage', (req, res) =>{
@@ -263,9 +282,10 @@ app.get('/api/tableau/candidature', (req, res) => {
 
     let contenu = {};
 
-    let query = "SELECT CANDIDATURE.id_candidature, ENTREPRISE.nom_entreprse, CANDIDATURE.origine_offre\
-        FROM CANDIDATURE, ENTREPRISE, ETUDIANT\
-        WHERE CANDIDATURE.ETUDIANT_id_etudiant = " + id + " AND CANDIDATURE.ENTREPRISE_id_entreprise = ENTREPRISE.id_entreprise ";
+    let query = "SELECT DISTINCT CANDIDATURE.id_candidature, ENTREPRISE.nom_entreprse, CANDIDATURE.origine_offre \
+        FROM CANDIDATURE, ENTREPRISE, etudiant, UTILISATEUR \
+        WHERE CANDIDATURE.ENTREPRISE_id_entreprise = ENTREPRISE.id_entreprise \
+        AND utilisateur.id_utilisateur = " + id;
     
         pool.getConnection(function (err, connection) {
         if (err) throw err;
@@ -347,35 +367,132 @@ app.get('/api/tableau/stage', (req, res) => {
 //-------------------------ENSEIGNANT-------------------------//
 //-----------Récupération infos perso-----------
 app.get('/api/enseigant/info', (req, res) => {
-    const enseignant = {
-        adresse_mail : "laurence.duval@univ-brest.fr",
-        nom_enseignant : "Duval",
-        prenom_enseignant : "Laurence"
-    }
+    const {id} = req.query;
 
-    res = res.json(enseignant);
+    let query = "SELECT UTILISATEUR.email, UTILISATEUR.nom_utilisateur, UTILISATEUR.prenom_utilisateur \
+        FROM UTILISATEUR\
+        WHERE UTILISATEUR.id_utilisateur = " + id ;
+
+    pool.getConnection(function (err, connection) {
+        if(err) throw err;
+        connection.query(query, function (error, results, fields) {
+            if (error) throw error;
+            let enseignant = {
+                adresse_mail : results[0].email,
+                nom_enseignant : results[0].nom_utilisateur,
+                prenom_enseignant : results[0].prenom_utilisateur
+            }
+            res = res.json(enseignant);
+        });
+    });
 });
 
 //-----------Transmettre tableaux page endeignant-----------
 
 app.get('/tableau/ensseignant/cv', (req, res) => {
-    const contenu ={
-        0:{"Nom":"prout", "Prénom":"pouet", "Filière": "woop", "Entreprise": "poop", "Lettre" : "boop", "Traiter": ""}
-    };
+    const contenu = {};
 
-    res = res.json(contenu);
+    let query = "SELECT UTILISATEUR.nom_utilisateur, UTILISATEUR.prenom_utilisateur, ETUDIANT.filiere, DOCUMENT.lien\
+        FROM UTILISATEUR, ETUDIANT, DOCUMENT, CV\
+        WHERE DOCUMENT.ETUDIANT_id_etudiant = ETUDIANT.id_etudiant\
+        AND UTILISATEUR.id_utilisateur = ETUDIANT.UTILISATEUR_id_utilisateur\
+        AND DOCUMENT.ENSEIGNANT_id_enseignant = 0\
+        AND CV.DOCUMENT_id_document = DOCUMENT.id_document";
+
+    pool.getConnection(function (err, connection) {
+        if(err) throw err;
+        connection.query(query, function (error, results, fields) {
+            if (error) throw error;
+            for(let i=0; i<results.length; i++){
+                contenu['' + i] = {
+                    "Nom" : results[i].nom_utilisateur,
+                    "Prénom" : results[i].prenom_utilisateur,
+                    "Filière" : results[i].fliere,
+                    "CV" : results[i].lien
+                }
+            }
+            res = res.json(contenu);
+        });
+    });
 });
 
 app.get('/tableau/ensseignant/lettre', (req, res) => {
-    const contenu = {}
+    const contenu = {};
 
-    res = res.json(contenu);
+    let query = "SELECT UTILISATEUR.nom_utilisateur, UTILISATEUR.prenom_utilisateur, ETUDIANT.filiere, DOCUMENT.lien, LETTRE_MOTIVATION.entreprise\
+        FROM UTILISATEUR, ETUDIANT, DOCUMENT, LETTRE_MOTIVATION\
+        WHERE DOCUMENT.ETUDIANT_id_etudiant = ETUDIANT.id_etudiant\
+        AND UTILISATEUR.id_utilisateur = ETUDIANT.UTILISATEUR_id_utilisateur\
+        AND DOCUMENT.ENSEIGNANT_id_enseignant = 0\
+        AND LETTRE_MOTIVATION.DOCUMENT_id_document = DOCUMENT.id_document";
+
+    pool.getConnection(function (err, connection) {
+        if(err) throw err;
+        connection.query(query, function (error, results, fields) {
+            if (error) throw error;
+            for(let i=0; i<results.length; i++){
+                contenu['' + i] = {
+                    "Nom" : results[i].nom_utilisateur,
+                    "Prénom" : results[i].prenom_utilisateur,
+                    "Filière" : results[i].fliere,
+                    "Entreprise" : results[i].lien,
+                    "Lettre" : results[i].entreprise
+                }
+            }
+            res = res.json(contenu);
+        });
+    });
 });
 
 app.get('/tableau/ensseignant/historique', (req, res) => {
-    const contenu = {}
+    const contenu = {};
 
-    res = res.json(contenu);
+    let query = "SELECT DOCUMENT.date_consultation, UTILISATEUR.nom_utilisateur, UTILISATEUR.prenom_utilisateur, ETUDIANT.filiere, DOCUMENT.lien, DOCUMENT.id_document \
+        FROM DOCUMENT, UTILISATEUR, ETUDIANT \
+        INNER JOIN UTILISATEUR prof \
+        ON (prof.id_utilisateur = 1) \
+        WHERE DOCUMENT.ETUDIANT_id_etudiant = ETUDIANT.id_etudiant \
+        AND ETUDIANT.UTILISATEUR_id_utilisateur = UTILISATEUR.id_utilisateur \
+        AND DOCUMENT.ENSEIGNANT_id_enseignant != 0 ";
+
+    pool.getConnection(function (err, connection) {
+        if(err) throw err;
+        connection.query(query, function (error, results, fields) {
+            if (error) throw error;
+            for(let i=0; i<results.length; i++){
+                contenu['' + i] = {
+                    "Date" : results[i].date_consultation,
+                    "Nom" : results[i].nom_utilisateur,
+                    "Prenom" : results[i].prenom_utilisateur,
+                    "Filiere" : results[i].filiere,
+                    "CV/Lettre" : "",
+                    "Document" : results[i].lien
+                }
+
+                let queryLettre = "SELECT LETTRE_MOTIVATION.id_lettre_motivation \
+                    FROM LETTRE_MOTIVATION, DOCUMENT \
+                    WHERE LETTRE_MOTIVATION.DOCUMENT_id_document = " + results[i].id_document;
+                connection.query(queryLettre, function (error, results, fields){
+                    if (error) throw error;
+                    if(results.length != 0){
+                        contenu['' + i]["CV/Lettre"] = "Lettre";
+                        res = res.json(contenu);
+                    }
+                });
+
+                let queryCV = "SELECT CV.id_CV \
+                    FROM CV, DOCUMENT \
+                    WHERE CV.DOCUMENT_id_document = " + results[i].id_document;
+                connection.query(queryCV, function (error, results, fields){
+                    if (error) throw error;
+                    if(results.length != 0){
+                        contenu['' + i]["CV/Lettre"] = "CV";
+                        res = res.json(contenu);
+                    }
+                });
+            }
+        });
+    });
 });
 
 //----------LANCEMENT DU SERVEUR-----------//

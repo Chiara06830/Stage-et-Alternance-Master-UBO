@@ -61,10 +61,15 @@ class PopAjoutEntretien extends Component {
     afficherIntervenant(){
         let inter = "";
 
-        this.setState({nom : this.state.nom.push('')});
-        this.setState({prenom : this.state.prenom.push('')});
-        this.setState({fonction : this.state.fonction.push('')});
-        this.setState({entreprise : this.state.entreprise.push('')});
+        //initialisation des données du nouvel intervenant
+        this.state.nom.length = this.state.nom.length + 1;
+        this.state.nom[this.state.nom.length-1] = '';
+        this.state.prenom.length = this.state.prenom.length + 1;
+        this.state.prenom[this.state.prenom.length-1] = '';
+        this.state.fonction.length = this.state.fonction.length + 1;
+        this.state.fonction[this.state.fonction.length-1] = '';
+        this.state.entreprise.length = this.state.entreprise.length + 1;
+        this.state.entreprise[this.state.entreprise.length-1] = '';
 
         for(let i=0; i<this.nbIntervenant; i++){
             inter +=

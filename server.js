@@ -2,6 +2,7 @@ const cors = require('cors');
 const express = require('express');
 const mysql = require('mysql'); 
 const fileUpload = require('express-fileupload');
+const fetch = require('node-fetch');
 const bodyParser = require('body-parser');
 
 const app = express();
@@ -27,24 +28,16 @@ app.use(bodyParser.json());
 app.get('/login', (req, res) => {
     const {email, password} = req.query;
 
-    let query =`SELECT UTILISATEUR.id_utilisateur
-                FROM UTILISATEUR 
-                WHERE UTILISATEUR.email = "${email}"
-                AND UTILISATEUR.mot_de_passe = "${password}"`;
-
-    pool.getConnection(function (err, connection) {
-        if(err) throw err;
-        connection.query(query, function (error, results, fields) {
-            if (error) throw error;
-            if(results.length != 0){
-                let id = results[0].id_utilisateur
-                console.log("ID user : " + id);
-                return res.json({
-                    data : id
-                });
-            }
-        });
-    });
+    let id = -2;
+    
+    fetch(`http://localhost:6146/login?email=${email}&password=${password}`)
+        .then(res => res.json())    
+        .then(result => {
+            return res.json({
+                data : result.data
+            });
+        })
+        .catch(err =>{if(err) throw err;});
 });
 
 //-----------Inscription-----------
@@ -58,45 +51,58 @@ app.post('/inscription/creation', (req, res) => {
         req.body.etudiant.mailUBO, 
         req.body.etudiant.password];
 
-    let query = "INSERT INTO UTILISATEUR (`nom_utilisateur`, `prenom_utilisateur`, `mot_de_passe`, `email`) \
-        VALUES(\"" + columns[1] + "\",\
-        \"" + columns[0] + "\",\
-        \"" + columns[6] + "\", \
-        \"" + columns[5] + "\")";
-
-    let queryID = "SELECT UTILISATEUR.id_utilisateur FROM UTILISATEUR WHERE UTILISATEUR.email = \"" + columns[5] + "\"";
-
-    let natio = columns[4] === "francaise"? 1 : 0;
-    let queryAddEtud = "";
-
-    pool.getConnection(function (err, connection) {
-        if (err) throw err;
-        connection.query(query, (err, result)=> {
-            if (err) throw err;
-        });
-        connection.query(queryID, (err, result) => {
-            if (err) throw err;
-            id = result[0].id_utilisateur;
-            queryAddEtud = "INSERT INTO ETUDIANT(`nationalite_fr`, `date_naissance`, `UTILISATEUR_id_utilisateur`, `alternance`, `email_perso`)\
-                VALUES (" + natio + ",\
-                DATE(\"" + columns[3] + "\"),\
-                " + result[0].id_utilisateur + ",\
-                0, \
-                \"" + columns[2] +"\")";
-            connection.query(queryAddEtud, (err, result) => {
-                if(err) throw err;
-            });
-        });
-    });
-
+    fetch(`http://localhost:6146/inscription/creation/utilisateur?nom=${columns[1]}&prenom=${columns[0]}&password=${columns[6]}&mailUBO=${columns[5]}`)
+        .catch(err =>{if(err) throw err;});
+    fetch(`http://localhost:6146/inscription/creation/id?mail=${columns[5]}`)
+        .then(res => res.json())  
+        .then(resun => {
+            fetch(`http://localhost:6146/inscription/creation/etudiant?nationalite=${columns[4]}&dateNaissance=${columns[3]}&id=${resun.data}&mail=${columns[2]}`)
+                .catch(err =>{if(err) throw err;});
+        })
+        .catch(err =>{if(err) throw err;});
 });
 
 app.post('inscrption/modif/etuidant', (req, res) => {
-    console.log(req.body);
+    //DOIT AJOUTER ID A INSCRPTION QUAND C'EST POSSIBLE
+    //FIliere + candidature alternance
+
+    const queryU = "UPDATE UTILISATEUR \
+        SET UTILISATEUR.nom_utilisateur = \"" + req.body.nom + "\", \
+        UTILISATEUR.prenom_utilisateur = \"" + req.body.prenom + "\", \
+        UTILISATEUR.mot_de_passe = \"" + req.body.password + "\", \
+        UTILISATEUR.email=\"" + req.body.mailUBO + "\" \
+        WHERE UTILISATEUR.id_utilisateur = " + req.body.id;
+
+    const queryE ="UPDATE ETUDIANT\
+        SET ETUDIANT.nationalite_fr=" + req.body.nationalite + ", \
+        ETUDIANT.date_naissance = DATE(\"" + req.body.dateNaissance + "\") \
+        WHERE ETUDIANT.UTILISATEUR_id_utilisateur = " + req.body.id;
+
+    pool.getConnection(function (err, connection) {
+        if (err) throw err;
+        connection.query(queryU, (err, result)=> {
+            if (err) throw err;
+        });
+        connection.query(queryE, (err, result)=> {
+            if (err) throw err;
+        });
+    });
 });
 
 app.post('inscrption/modif/enseignant', (req, res) => {
-    console.log(req.body);
+    const queryU = "UPDATE UTILISATEUR \
+        SET UTILISATEUR.nom_utilisateur = \"" + req.body.nom + "\", \
+        UTILISATEUR.prenom_utilisateur = \"" + req.body.prenom + "\", \
+        UTILISATEUR.mot_de_passe = \"" + req.body.password + "\", \
+        UTILISATEUR.email=\"" + req.body.mailUBO + "\" \
+        WHERE UTILISATEUR.id_utilisateur = " + req.body.id;
+
+    pool.getConnection(function (err, connection) {
+        if (err) throw err;
+        connection.query(queryU, (err, result)=> {
+            if (err) throw err;
+        });
+    });
 });
 
 //-----------Ajout entreprise----------
@@ -172,7 +178,7 @@ app.get('/api/etudiant/info', (req, res) => {
 });
 
 //-----------Récupération CV et Lettre-----------
-app.post('/upload/etudiant/cv', (res, req) =>{
+/*app.post('/upload/etudiant/cv', (res, req) =>{
     console.log(req.body);
     if(req.files === null){ //si on essaie de récuperer rien du tout
         return res.statusCode(400).json({msg : 'Auncun fihcier chargé'});
@@ -205,7 +211,7 @@ app.post('/upload/etudiant/lettre', (res, req) =>{
 
         res.json({fileName: file.name, filePath: `/uploads/cv/${file.name}`})
     });
-});
+});*/
 
 //-----------Récupérer Candidature Entretien et Stage-----------
 
@@ -223,7 +229,7 @@ app.post('/api/etudiant/candidature', (req, res) =>{
                 VALUES (\"" +  req.body.candidature.origine + "\", " + results[0].id_etudiant + ", " + results[0].id_entreprise + ");";
             connection.query(query, function(error, results, fileds){
                 if (error) throw error;
-            })
+            });
         });
     });
 });
@@ -237,12 +243,32 @@ app.post('/api/etudiant/entretien', (req, res) =>{
 });
 
 app.post('/api/etudiant/stage', (req, res) =>{
-    console.log(req.body);
+    const queryID = "SELECT ENTREPRISE.id_entreprise, ETUDIANT.id_etudiant \
+        FROM ENTREPRISE, ETUDIANT \
+        WHERE ENTREPRISE.nom_entreprse = \"" + req.body.stage.entreprise + "\" \
+        AND ETUDIANT.UTILISATEUR_id_utilisateur = " + 1;
+
+    pool.getConnection(function (err, connection) {
+        if (err) throw err;
+        connection.query(queryID, function (error, results, fields){
+            if (error) throw error;
+            const query = "UPDATE ETUDIANT \
+                SET ETUDIANT.date_obtention_stage = NOW(), \
+                type_contrat = \"" + req.body.stage.contrat + "\", \
+                ENTREPRISE_id_entreprise = " + results[0].id_entreprise + " \
+                WHERE ETUDIANT.id_etudiant = " + results[0].id_etudiant;
+            connection.query(query, function(error, results, fileds){
+                if (error) throw error;
+            });
+        });
+    });
 });
 
 //-----------Transmettre tableaux page etudiant-----------
 
 app.get('/api/tableau/cv', (req, res) => {
+    //FAUT RECTIFIER LA CLEF ETRANGERE ENSEIGNANT.id_enseignant
+
     /*const {id} = req.query;
 
     let contenu = {};
@@ -494,6 +520,41 @@ app.get('/tableau/ensseignant/historique', (req, res) => {
         });
     });
 });
+
+//-----------Transmettre les stats page endeignant-----------
+
+app.get('/stats/demandeAlternance', (req, res) => {
+    const query = "SELECT COUNT(*) as nbDemandeAlternance\
+        FROM ETUDIANT \
+        WHERE ETUDIANT.alternance = 1";
+
+    pool.getConnection(function (err, connection) {
+        if(err) throw err;
+        connection.query(query, function(error, results, fields) {
+            if(error) throw error;
+            res = res.json({
+                data : results[0].nbDemandeAlternance
+            });
+        });
+    });
+});
+
+app.get('/stats/stage', (req, res) => {
+    const query = "SELECT COUNT(*) as nbStage\
+        FROM ETUDIANT \
+        WHERE ETUDIANT.ENTREPRISE_id_entreprise <> 0 ";
+
+    pool.getConnection(function (err, connection) {
+        if(err) throw err;
+        connection.query(query, function(error, results, fields) {
+            if(error) throw error;
+            res = res.json({
+                data : results[0].nbStage
+            });
+        });
+    });
+});
+
 
 //----------LANCEMENT DU SERVEUR-----------//
 

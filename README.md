@@ -1,11 +1,11 @@
 # Stage et alternance master UBO
 
-**Stage et alternance master UBO** est une application de gestion qui permet à chaque étudiant en master informatique a l'UBO de marquer un suivi de ses recherches de stages en master 1.
+**Stage et alternance master UBO** est une application de gestion qui permet à chaque étudiant en master informatique a l'UBO de marquer un suivi de ses recherches de stages en master 1. \
 
 Les enseignants , quant à eux, peuvent consulter les données entrées par un étudiant.
 
 ## Installation
-Il faut déjà disposé d'une version de Node égal ou supérieure a la `v14.13.0`.
+Il faut déjà disposé d'une version de Node égal ou supérieure a la `v14.13.0`. \
 
 Dans un premier temps il faut installer la base de données en local dont le script est dans `createSchema.sql`. Puis installé les node_modules du côté client et du côté serveur.
 ```
@@ -23,7 +23,7 @@ npm start
 
 ## Utilisations
 ### Etudiant
-Un étudiant peut se créer un compte avec une adresse mail de type Prenom.Nom@etudiant.univ-brest.fr.
+Un étudiant peut se créer un compte avec une adresse mail de type Prenom.Nom@etudiant.univ-brest.fr. \
 Il pourra ensuite se connecter sur l'application ou il pourra :
 
 - renseigner une candidature;

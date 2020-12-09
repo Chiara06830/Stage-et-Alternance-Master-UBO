@@ -4,7 +4,7 @@
   "description": "Application de gestion des stages et alternanace en master",
   "main": "server.js",
   "scripts": {
-    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "start": "concurrently \"npm run server\" \"npm run client\" \"node server.js\" \"node serverBDD.js\"",
     "server": "node server.js",
     "client": "npm start --prefix client"
   },

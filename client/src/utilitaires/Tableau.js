@@ -23,6 +23,7 @@ class Tableau extends Component{
                 this.setState({
                     contenu: data 
                 });
+                console.log(this.state.contenu);
             })
             .catch(error => this.setState({error}));
     }
@@ -43,14 +44,16 @@ class Tableau extends Component{
                 }else if(this.props.nomColonne[i] === "Traiter" || this.props.nomColonne[i] === "Modifier"){
                     //ouvre la popup du tableau
                     infos += "<td style=\"text-align: center\"/>\
-                        <div class=\"modifier\"></div>";
+                        <div class=\"modifier\">\
+                            <img src=\"/img/crayon_376363.png\" alt=\"bouton modifier\" width=\"20\" height=\"20\">\
+                        </div>";
                 }else if(this.props.nomColonne[i] === "Supprimer"){
                     //bouton qui envoie l'id de la ligne au back end pour ensuite la supprimer de la BDD
                     infos += "<td style=\"text-align: center\"/> \
                         <form action=\"" + this.props.post + "\" method=\"POST\">\
                             <button style=\"background: none; border: none;\" class=\"jeter\" type=\"submit\">\
-                                <input style=\"visibility: hidden; width:0; height:0\" name=\"id\" value=\"" + this.state.contenu[j]["id"] + "\"/>\
-                                <img src=\"/img/csm_Accroche_dechets_menagers_28360027d4.png\" alt=\"bouton modifier\" width=\"20\" height=\"20\">\
+                                <input style=\"visibility: hidden; width:0; height:0\" name=\"id\" value=\"" + this.state.contenu["" + j]["id"] + "\"/>\
+                                <img src=\"/img/csm_Accroche_dechets_menagers_28360027d4.png\" alt=\"bouton supprimer\" width=\"20\" height=\"20\">\
                             </button>\
                         </form>";
                 }else if(this.props.nomColonne[i] === "Site web"){
@@ -69,12 +72,13 @@ class Tableau extends Component{
         return <tbody dangerouslySetInnerHTML={{ __html: infos }}/>;
     }
 
-    ajoutPopModif(){
+    //pour rendre le crayon cliquable, ne marche pas ...
+    /*ajoutPopModif(){
         const cases = document.getElementsByClassName("modifier");
         for(let i=0; i<cases.length; i++){
             cases[i].innerHTML = this.props.pop;
         }
-    }
+    }*/
 
     //-----------Créer l'entête de la table-----------
     createTable(){
@@ -93,7 +97,7 @@ class Tableau extends Component{
                     {this.createTable()}
                 </thead>
                     {this.createRows()}
-                    {this.ajoutPopModif()}
+                    {/*this.ajoutPopModif()*/}
             </table>
         );
     }

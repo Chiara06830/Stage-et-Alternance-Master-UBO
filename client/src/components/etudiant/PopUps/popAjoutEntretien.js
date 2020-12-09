@@ -33,6 +33,7 @@ class PopAjoutEntretien extends Component {
         this.setState({fonction : sauv});
     }
     sauvEntreprise(event, i){
+        console.log("--" + i);
         let sauv = this.state.entreprise;
         sauv[i] = event.target.value;
         this.setState({entreprise : sauv});
@@ -40,27 +41,6 @@ class PopAjoutEntretien extends Component {
 
     //------------- Fonction utilitaires -------------//
     ajoutIntervenant(){
-        this.nbIntervenant ++;
-        this.afficherIntervenant();
-    }
-
-    suppIntervenant(){
-        if(this.nbIntervenant>0){
-            this.nbIntervenant--;
-            this.afficherIntervenant();
-        }
-    }
-
-    attribuerSauv(){
-        let input = document.getElementsByName("intervenant");
-        for(let i=0; i<input.length; i++){
-            console.log(input[i]);
-        }
-    }
-
-    afficherIntervenant(){
-        let inter = "";
-
         //initialisation des données du nouvel intervenant
         this.state.nom.length = this.state.nom.length + 1;
         this.state.nom[this.state.nom.length-1] = '';
@@ -70,15 +50,41 @@ class PopAjoutEntretien extends Component {
         this.state.fonction[this.state.fonction.length-1] = '';
         this.state.entreprise.length = this.state.entreprise.length + 1;
         this.state.entreprise[this.state.entreprise.length-1] = '';
+        this.nbIntervenant ++;
+        this.afficherIntervenant();
+    }
+
+    suppIntervenant(){
+        if(this.nbIntervenant>0){
+            //initialisation des données du nouvel intervenant
+            this.state.nom.length = this.state.nom.length - 1;
+            this.state.prenom.length = this.state.prenom.length - 1;
+            this.state.fonction.length = this.state.fonction.length - 1;
+            this.state.entreprise.length = this.state.entreprise.length - 1;
+            this.nbIntervenant--;
+            this.afficherIntervenant();
+        }
+    }
+
+    attribuerSauv(){
+        let input = document.getElementsByName("intervenant");
+        for(let i=0; i<input.length; i = i+4){
+            let ligne = i/4;
+            input[i].onchange = (event) => this.sauvEntreprise(event, ligne);
+        }
+    }
+
+    afficherIntervenant(){
+        let inter = "";
 
         for(let i=0; i<this.nbIntervenant; i++){
             inter +=
             "<div>\
                 <p>Intervenant n° " + (i+1)  + " :</p>\
-                <input type=\"text\" placeholder=\"Nom de l'intervenant\" value=\"" + this.state.nom[i] + "\" name=\"intervenant" + i + "\">\
-                <input type=\"text\" placeholder=\"Prénom de l'intervenant\" value=\"" + this.state.prenom[i] + "\" name=\"intervenant" + i + "\"/>\
-                <input type=\"text\" placeholder=\"Fonction de l'intervenant\" value=\"" + this.state.fonction[i] + "\" name=\"intervenant" + i + "\"/>\
-                <input type=\"text\" placeholder=\"Entreprise\" value=\"" + this.state.entreprise[i] + "\" name=\"intervenant" + i + "\"/>\
+                <input type=\"text\" placeholder=\"Nom de l'intervenant\" value=\"" + this.state.nom[i] + "\" name=\"intervenant\">\
+                <input type=\"text\" placeholder=\"Prénom de l'intervenant\" value=\"" + this.state.prenom[i] + "\" name=\"intervenant\"/>\
+                <input type=\"text\" placeholder=\"Fonction de l'intervenant\" value=\"" + this.state.fonction[i] + "\" name=\"intervenant\"/>\
+                <input type=\"text\" placeholder=\"Entreprise\" value=\"" + this.state.entreprise[i] + "\" name=\"intervenant\"/>\
             </div>";
         }
         document.getElementById("intervenant").innerHTML = inter;

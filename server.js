@@ -9,7 +9,7 @@ const app = express();
 const port = 7146;
 
 const pool = mysql.createPool({
-    connectionLimit : 10,
+    connectionLimit : 100,
     host     : 'localhost',
     user     : 'root',
     password : 'motdepasse',
@@ -52,14 +52,18 @@ app.post('/inscription/creation', (req, res) => {
         req.body.etudiant.password];
 
     fetch(`http://localhost:6146/inscription/creation/utilisateur?nom=${columns[1]}&prenom=${columns[0]}&password=${columns[6]}&mailUBO=${columns[5]}`)
-        .catch(err =>{if(err) throw err;});
-    fetch(`http://localhost:6146/inscription/creation/id?mail=${columns[5]}`)
-        .then(res => res.json())  
-        .then(resun => {
-            fetch(`http://localhost:6146/inscription/creation/etudiant?nationalite=${columns[4]}&dateNaissance=${columns[3]}&id=${resun.data}&mail=${columns[2]}`)
+        .then(res = res.json())
+        .then(res => {
+            fetch(`http://localhost:6146/inscription/creation/id?mail=${columns[5]}`)
+                .then(res => res.json())  
+                .then(resun => {
+                    fetch(`http://localhost:6146/inscription/creation/etudiant?nationalite=${columns[4]}&dateNaissance=${columns[3]}&id=${resun.data}&mail=${columns[2]}`)
+                        .catch(err =>{if(err) throw err;});
+                })
                 .catch(err =>{if(err) throw err;});
         })
         .catch(err =>{if(err) throw err;});
+    
 });
 
 app.post('inscrption/modif/etuidant', (req, res) => {
@@ -130,6 +134,7 @@ app.get('/entreprise/liste', (req, res) => {
             if (err) throw err;
             for(let i=0; i<results.length; i++){
                 contenu['' + i] = {
+                    "id" : results[i].id_entreprise,
                     "Nom" : results[i].nom_entreprse,
                     "Site web" : results[i].site_web,
                     "Adresse" : results[i].adresse_entreprise,
@@ -140,7 +145,7 @@ app.get('/entreprise/liste', (req, res) => {
     });
 });
 
-app.post('/api/entretien/liste', (req, res) => {
+app.post('/api/entreprise/liste', (req, res) => {
     console.log(req.body);
 });
 
@@ -246,7 +251,7 @@ app.post('/api/etudiant/stage', (req, res) =>{
     const queryID = "SELECT ENTREPRISE.id_entreprise, ETUDIANT.id_etudiant \
         FROM ENTREPRISE, ETUDIANT \
         WHERE ENTREPRISE.nom_entreprse = \"" + req.body.stage.entreprise + "\" \
-        AND ETUDIANT.UTILISATEUR_id_utilisateur = " + 1;
+        AND ETUDIANT.UTILISATEUR_id_utilisateur = " + req.body.stage.id;
 
     pool.getConnection(function (err, connection) {
         if (err) throw err;
@@ -335,8 +340,10 @@ app.get('/api/tableau/entretien', (req, res) => {
     let contenu = {};
 
     let query = "SELECT ENTREPRISE.nom_entreprse, INTERVENANT.nom_intervenant,INTERVENANT.prenom_intervenant, ENTRETIEN.date_entretien\
-        FROM ENTRETIEN, ENTREPRISE, INTERVENANT \
-        WHERE ENTRETIEN.ETUDIANT_id_etudiant = " + id + " AND ENTRETIEN.INTERVENANT_id_intervanant = INTERVENANT.id_intervanant AND INTERVENANT.ENTREPRISE_id_entreprise = ENTREPRISE.id_entreprise";
+        FROM ENTRETIEN, ENTREPRISE, INTERVENANT, utilisateur    \
+        WHERE ENTRETIEN.INTERVENANT_id_intervanant = INTERVENANT.id_intervanant \
+        AND INTERVENANT.ENTREPRISE_id_entreprise = ENTREPRISE.id_entreprise \
+        AND utilisateur.id_utilisateur = " + id;
 
     pool.getConnection(function (err, connection) {
         if (err) throw err;
@@ -360,12 +367,16 @@ app.get('/api/tableau/stage', (req, res) => {
 
     let contenu = {};
 
-    let queryEntreprise = "SELECT ENTREPRISE.id_entreprise, ENTREPRISE.nom_entreprse, ENTREPRISE.site_web ,ENTREPRISE.adresse_entreprise\
-                FROM ENTREPRISE, ETUDIANT\
-                WHERE ETUDIANT.ENTREPRISE_id_entreprise = ENTREPRISE.id_entreprise \
-                AND ETUDIANT.id_etudiant = " + id;
+    let queryEntreprise = "SELECT ENTREPRISE.id_entreprise, ENTREPRISE.nom_entreprse, ENTREPRISE.site_web ,ENTREPRISE.adresse_entreprise \
+        FROM ENTREPRISE, etudiant, utilisateur \
+        WHERE ETUDIANT.ENTREPRISE_id_entreprise = ENTREPRISE.id_entreprise \
+        AND etudiant.UTILISATEUR_id_utilisateur = utilisateur.id_utilisateur \
+        AND utilisateur.id_utilisateur =" + id;
 
-    let queryEtuidant = "SELECT ETUDIANT.type_contrat, ETUDIANT.alternance FROM ETUDIANT WHERE ETUDIANT.id_etudiant = " + id;
+    let queryEtuidant = "SELECT DISTINCT ETUDIANT.type_contrat, ETUDIANT.alternance \
+        FROM etudiant, utilisateur \
+        WHERE utilisateur.id_utilisateur = " + id +" \
+        AND utilisateur.id_utilisateur = etudiant.UTILISATEUR_id_utilisateur";
 
     pool.getConnection(function (err, connection) {
         if (err) throw err;

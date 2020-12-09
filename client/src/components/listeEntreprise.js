@@ -13,7 +13,7 @@ export default class ListeEntreprise extends Component{
                     chemin="http://localhost:7146/entreprise/liste"
                     nbColonne={4}
                     nomColonne={["Nom", "Site web", "Adresse", "Supprimer"]}
-                    post="http://localhost:7146/api/entretien/liste"
+                    post="http://localhost:7146/api/entreprise/liste"
                 />
             </div>
         );

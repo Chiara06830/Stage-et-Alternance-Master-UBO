@@ -35,13 +35,13 @@ Il pourra ensuite se connecter sur l'application ou il pourra :
 adresse mail -> mabel.pines@etudiant.univ-brest.fr
 mot de passe -> dandiiiiinou666****
 ### Enseignant 
-Un enseignant ne peut se créer de compte, ce sera le rôle de l'administrateur.
+Un enseignant ne peut se créer de compte, ce sera le rôle de l'administrateur. \
 Il pourra ensuite se connecter avec son adresse mail professionnelle (Prenom.Nom@univ-brest.fr). De la il pourra :
 
 - ajouter une entreprise a la base de données;
 - consulter la liste des entreprise;
 - ajouter un étudiant.
-- 
+
 *Compte exemple  : 
 adresse mail -> Ford.Pines@univ-brest.fr
 mot de passe -> billCipher1989*
